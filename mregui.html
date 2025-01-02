@@ -1,0 +1,135 @@
+
+<!DOCTYPE html>
+
+<html lang="en">
+
+<!-- //// //// //// //// -->
+
+<head>
+  <title>mregui</title>
+
+  <!-- charset must remain utf-8 to be handled properly by Processing -->
+  <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+
+
+  <!--CSS-->
+  <link rel="stylesheet" type="text/css" href="./keyframes.css" media="all"/>
+
+  <!--jQuery-->
+  <link   rel="stylesheet" href="./jquery/jquery-ui-1.9.2.custom/css/smoothness/jquery-ui-1.9.2.custom.css"
+          type="text/css" media="screen"/>
+  <link rel="stylesheet" type="text/css" href="./css/adjustJquery.css" media="all"/><!--自分で作ったアジャスト用-->
+  <script type="text/javascript" src="./jquery/jquery-ui-1.9.0.custom/js/jquery-1.8.2.js"></script>
+  <script type="text/javascript" src="./jquery/jquery-ui-1.9.0.custom/js/jquery-ui-1.9.0.custom.min.js"></script>
+  <script type="text/javascript" src="./jquery/plugin/jquery.xmldom.min.js"></script>
+  <script type="text/javascript" src="./jquery/plugin/jquery.csv.min.js"></script>
+
+  <!--MathJax-->
+  <!--
+  <script type="text/javascript"
+          src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML" >
+  </script>
+  -->
+  <!--JavaScript-->
+  <script type="text/javascript" src="./createQueryString.js" ></script>
+  <script type="text/javascript" src="./BackreferenceNumberManager.js" ></script>
+  <script type="text/javascript" src="./CaretManager.js" ></script>
+  <script type="text/javascript" src="./TokenManager.js" ></script>
+  <script type="text/javascript" src="./mregui.js" ></script>
+
+
+  <script type="text/javascript" src="http://twatabe.com/public_html/cgi-bin/mreg/prototypeMethods.js"></script>
+  <script type="text/javascript" src="http://twatabe.com/public_html/cgi-bin/mreg/constants.js"></script>
+  <script type="text/javascript" src="http://twatabe.com/public_html/cgi-bin/mreg/normalize.js"></script>
+  <script type="text/javascript" src="http://twatabe.com/public_html/cgi-bin/mreg/queryTokenize.js"></script>
+  <script type="text/javascript" src="http://twatabe.com/public_html/cgi-bin/mreg/queryParse.js"></script>
+  <script type="text/javascript" src="http://twatabe.com/public_html/cgi-bin/mreg/createMathTreeString.js"></script>
+  <script type="text/javascript" src="http://twatabe.com/public_html/cgi-bin/mreg/convertReplacement.js"></script>
+  <script type="text/javascript" src="http://twatabe.com/public_html/cgi-bin/mreg/invertMathTree.js"></script>
+</head>
+
+
+
+<body>
+
+
+
+<span class='search'>search</span>
+
+<textarea rows="2" cols="40" class="query-string"></textarea>
+
+<br/>
+
+<span class='input-structure input-msub'>msub</span>
+<span class='input-structure input-msup'>msup</span>
+<span class='input-structure input-msubsup'>msubsup</span>
+<span class='input-structure input-munder'>munder</span>
+<span class='input-structure input-mover'>mover</span>
+<span class='input-structure input-munderover'>munderover</span>
+<span class='input-structure input-mfrac'>mfrac</span>
+<span class='input-structure input-msqrt'>msqrt</span>
+<span class='input-structure input-mroot'>mroot</span>
+
+<br/>
+
+<span class='input-regular-expression input-zero-or-one'>brokenline</span>
+<span class='input-regular-expression input-more'>more</span>
+<span class='input-regular-expression input-boolean-or'>boolean-or</span>
+
+<br/>
+
+<span class='input-regular-expression input-wildcard'>wildcard</span>
+<span class='input-regular-expression input-character-class'>character-class</span>
+<span class='input-regular-expression input-negated-character-class'>negated-character-class</span>
+
+<br/>
+
+<span class='input-regular-expression input-capturing'>capturing</span>
+<span class='input-regular-expression input-backreference'>backreference</span>
+
+
+<br/>
+
+
+<svg xmlns="http://www.w3.org/2000/svg" id='queryView' 
+     width="800" height="400">
+     <foreignObject id='queryView-foreignObject' x='100' y='100' width='600' height='300'>
+     </foreignObject>
+</svg>
+
+
+
+<br/>
+<span id='num'></span>
+<br/>
+<span id='matched'></span>
+
+
+</body>
+
+<!-- //// //// //// //// -->
+
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

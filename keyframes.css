@@ -1,0 +1,165 @@
+
+
+@keyframes blink {
+  0%   {border-color:black; }
+  50%  {border-color:rgba(0,0,0,0); }
+}
+
+
+
+
+.blink,
+.blink.style-more > mpadded > .more-line,
+.blink.style-more > mpadded > .more-line > .more-line,
+.blink.style-more > mpadded > .more-line > .more-line > .more-line,
+.blink.style-more > mpadded > mpadded > mpadded > mpadded > menclose > mrow {
+    animation-name: blink;
+    animation-duration: 1s;
+    animation-timing-function: steps(1);
+    animation-iteration-count: infinite;
+}
+
+
+.null-rect {
+    border:0.125em double;
+    border-color:  black;
+}
+
+.highlight{
+  background: #A4A4A4;
+}
+
+.selected{
+  background: yellow;
+}
+
+.selected .highlight{
+  background: yellow;
+}
+
+menclose{
+  color: rgba(0,0,0,0);
+}
+
+
+
+
+
+.style-zero-or-one{
+  border: black 0.0625em dashed;
+  color: black;
+  /* 
+  margin:0em; 
+  padding:0.0625em;
+  */
+}
+
+.style-more{
+  border: black 0.0625em solid;
+  color: black;
+}
+
+.style-boolean-or{
+  border: black 0.0625em solid;
+}
+
+.style-more.style-zero-or-one{
+  border: black 0.0625em dashed;
+}
+.style-boolean-or.style-zero-or-one{
+  border: black 0.0625em dashed;
+}
+.style-capturing.style-zero-or-one{
+  border: black 0.0625em dashed;
+}
+
+
+.style-capturing{
+  border: black 0.0625em solid;
+  color: black;
+}
+.style-capturing-number-outer{
+  border: black 0.0625em solid;
+}
+.style-capturing-number-inner{
+  color: black;
+}
+
+
+.style-character-class{
+  border: black 0.0625em solid;
+  padding: 0.125em;
+  border-radius: 0.125em;
+  color: black;
+}
+.style-negated-character-class{
+  border: black 0.0625em solid;
+  padding: 0.125em;
+  border-radius: 0.125em;
+  background-color: black;
+  color: white;
+}
+
+
+
+.style-backreference{
+    border-image-source: url('./backreferenceImage.svg');
+    border-image-slice: 1 5 1 5 ;
+    border-image-repeat: stretch;
+    border-style:solid; 
+    border-top-width:0.0625em;
+    border-right-width:0.25em;
+    border-left-width:0.25em;
+    border-bottom-width:0.0625em;
+    color: black;
+}
+
+
+.style-more-right-lines{
+    border-image-source: url('./moreLinesImage.svg');
+    border-image-slice: 1 7 1 1 ;
+    border-image-repeat: stretch;
+    border-style:solid; 
+    border-top-width:0em;
+    border-right-width:0.4375em;
+    border-left-width:0em;
+    border-bottom-width:0em;
+    color: black;
+}
+
+
+.style-boolean-or .style-enclosing-regular-expression-content{
+    border-image-source: url('./booleanOrBorderImage.svg');
+    border-image-slice: 0 100 0 0;
+    border-image-repeat: stretch;
+    border-style:solid; 
+    border-top-width:0em;
+    border-right-width:0.0625em;
+    border-left-width:0em;
+    border-bottom-width:0em;
+    padding-right: 0em;
+    color: black;
+}
+
+
+
+
+
+
+
+
+@keyframes blink-boolean-or-line {
+  0%   {border-right-width:0.0625em; padding-right:0em;}
+  50%  {border-right-width:0em; padding-right:0.0625em;}
+}
+
+.blink .style-boolean-or-alternative{
+    animation-name: blink-boolean-or-line;
+    animation-duration: 1s;
+    animation-timing-function: steps(1);
+    animation-iteration-count: infinite;
+}
+
+
+
+

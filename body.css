@@ -1,0 +1,62 @@
+table{
+  border: solid 1px black;
+  text-align: center;
+}
+td{
+  border: solid 1px black;
+}
+
+
+.button-panels{
+  display: table;
+  table-layout:fixed;
+}
+
+
+
+.character-button-table-operators,
+.character-button-table-greeks{
+  height: 165px;
+  overflow: scroll;
+}
+
+.character-button-table,
+.structure-button-table,
+.regular-expression-button-table,
+.regular-expression-comb-button-table{
+  display: table-cell;
+  vertical-align:top;
+  padding-right: 10px;
+  padding-bottom: 20px;
+}
+
+
+
+.character-button-table table,
+.structure-button-table table,
+.regular-expression-button-table table,
+.regular-expression-comb-button-table table{
+  table-layout: fixed;
+  width: 0px; /* this attribute is required to direct 'fixed' */
+}
+.character-button-table td{
+  width: 10em;
+  height: 1em;
+  padding: 0px;
+}
+.structure-button-table td,
+.regular-expression-button-table td{
+  width: 4em;
+  height: 5em;
+}
+
+.regular-expression-comb-button-table td{
+  width: 6em;
+  height: 5em;
+}
+
+
+#queryView{
+  vertical-align: top;
+}
+

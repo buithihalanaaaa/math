@@ -1,0 +1,160 @@
+@import url('https://fonts.googleapis.com/css?family=Sacramento');
+@import url('https://fonts.googleapis.com/css?family=M+PLUS+Rounded+1c');
+@import url('https://fonts.googleapis.com/css?family=Noto+Sans+JP');
+
+h1 {
+    font-size: 50px;
+	font-family: 'M PLUS Rounded 1c', sans-serif;
+}
+
+h2 {
+	font-family: 'M PLUS Rounded 1c', sans-serif;
+}
+
+h3 {
+	font-family: 'M PLUS Rounded 1c', sans-serif;
+}
+
+/*タブ切り替え全体のスタイル*/
+.tabs {
+    margin-top: 50px;
+    padding-bottom: 40px;
+    background-color: #fff;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    width: 1800px;
+    margin: 0 auto;}
+  
+/*タブ切り替え全体のスタイル*/
+.tabs {
+    margin-top: 50px;
+    padding-bottom: 40px;
+    background-color: #fff;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    width: 1800px;
+    margin: 0 auto;}
+  
+  /*タブのスタイル*/
+  .tab_item {
+    width: calc(100%/3);
+    height: 50px;
+    border-bottom: 3px solid #5ab4bd;
+    background-color: #d9d9d9;
+    line-height: 50px;
+    font-size: 16px;
+    text-align: center;
+    color: #565656;
+    display: block;
+    float: left;
+    text-align: center;
+    font-weight: bold;
+    transition: all 0.2s ease;
+  }
+  .tab_item:hover {
+    opacity: 0.75;
+  }
+  
+  /*ラジオボタンを全て消す*/
+  input[name="tab_item"] {
+    display: none;
+  }
+  
+  /*タブ切り替えの中身のスタイル*/
+  .tab_content {
+    display: none;
+    padding: 40px 40px 0;
+    clear: both;
+    overflow: hidden;
+  }
+  
+  
+  /*選択されているタブのコンテンツのみを表示*/
+  #all:checked ~ #all_content,
+  #programming:checked ~ #programming_content,
+  #demofile:checked ~ #demofile_content {
+    display: block;
+  }
+  
+  /*選択されているタブのスタイルを変える*/
+  .tabs input:checked + .tab_item {
+    background-color: #5ab4bd;
+    color: #fff;
+  }
+  
+  button {
+    appearance: none;
+    margin: 0;
+    padding: 0;
+    background: none;
+    border: none;
+    border-radius: 0;
+    outline: none;
+  }
+  a {
+    margin:0;
+    padding:0;
+    font-size:100%;
+    vertical-align:baseline;
+    background:transparent;
+    text-decoration: none;
+  }
+  
+  .button {
+      position: relative;
+      display: inline-block;
+      padding: 1em 2em 1em 1em;
+      margin: 1em;
+      width: 175px;
+      font-size: 14px;
+      color: #fff;
+      text-align: center;
+      line-height: 1;
+      background: #5bbee5;
+      background: linear-gradient(to right, #5bbee5, #52ddae);
+      text-indent: 0.1em;
+      letter-spacing: 0.1em;
+      border-radius: 1.5em;
+      box-sizing:border-box;
+      cursor:pointer;
+  }
+  
+  .button:after {
+    content: "";
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    right: 1.5em;
+    margin: auto;
+    display: inline-block;
+    width: 0.5em;
+    height: 0.5em;
+    border-right: 1px solid #fff;
+    border-top: 1px solid #fff;
+    transform: rotate(45deg);
+    transition: right 0.5s;
+  }
+  
+  .button:hover:after{
+    right: 1em;
+  }
+
+
+
+
+
+  .filelabel{
+    display: inline-block;
+    position: relative;
+    background-color: #1877F2;
+    color: #fff;
+    font-size: 16px;
+    padding: 10px 20px;
+    border-radius: 8px;
+    transition: all 0.5s;
+  }
+  .filelabel:hover{
+    background-color: #004db1;
+  }
+  
+  .fileinput{
+    display: none;
+  }
