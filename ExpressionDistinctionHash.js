@@ -1,5 +1,5 @@
 var expressionDistinctionHash = function(n) {
-  target = document.getElementById("output");
+  var target = document.getElementById("output");
   var text;
   var str = n;
 
@@ -21,7 +21,7 @@ var expressionDistinctionHash = function(n) {
         description:"直線(傾き切逆型cx = my)"
       },
       y_slopeInterceptForm:{
-        package: "<mi>\s*([a-zA-Z]|\d+(\.\d+)?)\s*<\/mi>\s*<mi>x<\/mi>\s*<mo>\s*=\s*<\/mo>\s*<mi>y<\/mi>",
+        pattern: "<mi>\s*([a-zA-Z]|\d+(\.\d+)?)\s*<\/mi>\s*<mi>x<\/mi>\s*<mo>\s*=\s*<\/mo>\s*<mi>y<\/mi>",
         description:"直線(y傾き切型cx = y)"
 
       },
@@ -35,15 +35,15 @@ var expressionDistinctionHash = function(n) {
       //    "<mrow>\s*<msup>\s*<mi>x<\/mi>\s*<mn>2<\/mn>\s*<\/msup>\s*<mo>\+<\/mo>\s*<msup>\s*<mi>y<\/mi>\s*<mn>2<\/mn>\s*<\/msup>\s*<mo>=<\/mo>\s*<msup>\s*<mi>([a-zA-Z]|\d+(\.\d+)?)<\/mi>\s*<mn>2<\/mn>\s*<\/msup>|<msup>\s*<mi>x<\/mi>\s*<mn>2<\/mn>\s*<\/msup>\s*<mo>\+<\/mo>\s*<msup>\s*<mi>y<\/mi>\s*<mn>2<\/mn>\s*<\/msup>\s*<mo>[+-]<\/mo>\s*<mn>2<\/mn>\s*<mi>([a-zA-Z]|\d+(\.\d+)?)<\/mi>\s*<mi>x<\/mi>\s*<mo>[+-]<\/mo>\s*<mn>2<\/mn>\s*<mi>([a-zA-Z]|\d+(\.\d+)?)<\/mi>\s*<mi>y<\/mi>\s*<mo>\+<\/mo>\s*<msup>\s*<mi>([a-zA-Z]|\d+(\.\d+)?)<\/mi>\s*<mn>2<\/mn>\s*<\/msup>\s*<mo>\+<\/mo>\s*<msup>\s*<mi>([a-zA-Z]|\d+(\.\d+)?)<\/mi>\s*<mn>2<\/mn>\s*<\/msup>\s*<mo>\-<\/mo>\s*<msup>\s*<mi>([a-zA-Z]|\d+(\.\d+)?)<\/mi>\s*<mn>2<\/mn>\s*<\/msup>\s*<mo>=<\/mo>\s*<mn>0<\/mn>|<msup>\s*<mrow>\s*<mo>\(<\/mo>\s*<mi>x<\/mi>\s*<mo>\-<\/mo>\s*<mi>([a-zA-Z]|\d+(\.\d+)?)<\/mi>\s*<mo>\)<\/mo>\s*<\/mrow>\s*<mn>2<\/mn>\s*<\/msup>\s*<mo>\+<\/mo>\s*<msup>\s*<mrow>\s*<mo>\(<\/mo>\s*<mi>y<\/mi>\s*<mo>\-<\/mo>\s*<mi>([a-zA-Z]|\d+(\.\d+)?)<\/mi>\s*<mo>\)<\/mo>\s*<\/mrow>\s*<mn>2<\/mn>\s*<\/msup>\s*<mo>=<\/mo>\s*<msup>\s*<mi>([a-zA-Z]|\d+(\.\d+)?)<\/mi>\s*<mn>2<\/mn>\s*<\/msup>": "円形 ",
       standardForm: {
         pattern: "<msup>\s*<mi>x<\/mi>\s*<mn>2<\/mn>\s*<\/msup>\s*<mo>\+<\/mo>\s*<msup>\s*<mi>y<\/mi>\s*<mn>2<\/mn>\s*<\/msup>\s*<mo>=<\/mo>\s*<msup>\s*<mi>([a-zA-Z]|\d+(\.\d+)?)<\/mi>\s*<mn>2<\/mn>\s*<\/msup>",
-        description: "標準形式: x² + y² = r²"
+        description: "円形の標準形式: x² + y² = r²"
       },
       generalForm: {
         pattern: "<msup>\s*<mi>x<\/mi>\s*<mn>2<\/mn>\s*<\/msup>\s*<mo>\+<\/mo>\s*<msup>\s*<mi>y<\/mi>\s*<mn>2<\/mn>\s*<\/msup>\s*<mo>[+-]<\/mo>\s*<mn>2<\/mn>\s*<mi>([a-zA-Z]|\d+(\.\d+)?)<\/mi>\s*<mi>x<\/mi>\s*<mo>[+-]<\/mo>\s*<mn>2<\/mn>\s*<mi>([a-zA-Z]|\d+(\.\d+)?)<\/mi>\s*<mi>y<\/mi>\s*<mo>\+<\/mo>\s*<msup>\s*<mi>([a-zA-Z]|\d+(\.\d+)?)<\/mi>\s*<mn>2<\/mn>\s*<\/msup>\s*<mo>\+<\/mo>\s*<msup>\s*<mi>([a-zA-Z]|\d+(\.\d+)?)<\/mi>\s*<mn>2<\/mn>\s*<\/msup>\s*<mo>\-<\/mo>\s*<msup>\s*<mi>([a-zA-Z]|\d+(\.\d+)?)<\/mi>\s*<mn>2<\/mn>\s*<\/msup>\s*<mo>=<\/mo>\s*<mn>0<\/mn>",
-        description: "一般形式: x² + y² + 2gx + 2fy + c = 0"
+        description: "円形の一般形式: x² + y² + 2gx + 2fy + c = 0"
       },
       centerRadiusForm: {
         pattern: "<msup>\s*<mrow>\s*<mo>\(<\/mo>\s*<mi>x<\/mi>\s*<mo>\-<\/mo>\s*<mi>([a-zA-Z]|\d+(\.\d+)?)<\/mi>\s*<mo>\)<\/mo>\s*<\/mrow>\s*<mn>2<\/mn>\s*<\/msup>\s*<mo>\+<\/mo>\s*<msup>\s*<mrow>\s*<mo>\(<\/mo>\s*<mi>y<\/mi>\s*<mo>\-<\/mo>\s*<mi>([a-zA-Z]|\d+(\.\d+)?)<\/mi>\s*<mo>\)<\/mo>\s*<\/mrow>\s*<mn>2<\/mn>\s*<\/msup>\s*<mo>=<\/mo>\s*<msup>\s*<mi>([a-zA-Z]|\d+(\.\d+)?)<\/mi>\s*<mn>2<\/mn>\s*<\/msup>",
-        description: "中心半径形式: (x - h)² + (y - k)² = r²"
+        description: "円形の中心半径形式: (x - h)² + (y - k)² = r²"
       },
     },
     //放物線
@@ -217,126 +217,126 @@ var expressionDistinctionHash = function(n) {
       sine:{
          //    "<mi>s<\/mi><mi>i<\/mi><mi>n<\/mi>": "正弦 ",
         pattern: "<mi>s<\/mi><mi>i<\/mi><mi>n<\/mi>",
-        description: "正弦"
+        description: "正弦の三角関数"
       },
       //余弦関数    "<mi>c<\/mi><mi>o<\/mi><mi>s<\/mi>": "余弦 ",
       cosine:{
         //
         pattern: "<mi>c<\/mi><mi>o<\/mi><mi>s<\/mi>",
-        description: "余弦"
+        description: "余弦の三角関数"
       },
       //正接関数  "<mi>t<\/mi><mi>a<\/mi><mi>n<\/mi>|<mi>t<\/mi><mi>g<\/mi>": "正接 ",
       tangent:{
         pattern: "<mi>t<\/mi><mi>a<\/mi><mi>n<\/mi>|<mi>t<\/mi><mi>g<\/mi>",
-        description: "正接"
+        description: "正接の三角関数"
       },
       //余接関数  "<mi>c<\/mi><mi>o<\/mi><mi>t<\/mi>|<mi>c<\/mi><mi>t<\/mi><mi>g<\/mi>|<mi>c<\/mi><mi>t<\/mi><mi>n<\/mi>": "余接 ",
       cotangent:{
         pattern: "<mi>c<\/mi><mi>o<\/mi><mi>t<\/mi>|<mi>c<\/mi><mi>t<\/mi><mi>g<\/mi>|<mi>c<\/mi><mi>t<\/mi><mi>n<\/mi>",
-        description: "余接"
+        description: "余接の三角関数"
       },
       //正割関数  "<mi>s<\/mi><mi>e<\/mi><mi>c<\/mi>": "正割 ",
       secant:{
         pattern: "<mi>s<\/mi><mi>e<\/mi><mi>c<\/mi>",
-        description: "正割"
+        description: "正割の三角関数"
       },
       //         "<mi>c<\/mi><mi>o<\/mi><mi>s<\/mi><mi>e<\/mi><mi>c<\/mi>|<mi>c<\/mi><mi>s<\/mi><mi>c<\/mi>": "余割 ",
       cosecant:{
         pattern: "<mi>c<\/mi><mi>o<\/mi><mi>s<\/mi><mi>e<\/mi><mi>c<\/mi>|<mi>c<\/mi><mi>s<\/mi><mi>c<\/mi>",
-        description: "余割"
+        description: "余割の三角関数"
       },
       //逆正弦関数 "<mi>[aA]<\/mi><mi>r<\/mi><mi>c<\/mi><mi>s<\/mi><mi>i<\/mi><mi>n<\/mi>|<mi>s<\/mi><mi>i<\/mi><mi>n<\/mi><msup>(<mrow><\/mrow>|<mrow\/>)<mrow><mi>-<\/mi><mi>1<\/mi><\/mrow><\/msup>": "逆正弦 ",
       arcsine:{
         pattern: "<mi>[aA]<\/mi><mi>r<\/mi><mi>c<\/mi><mi>s<\/mi><mi>i<\/mi><mi>n<\/mi>|<mi>s<\/mi><mi>i<\/mi><mi>n<\/mi><msup>(<mrow><\/mrow>|<mrow\/>)<mrow><mi>-<\/mi><mi>1<\/mi><\/mrow><\/msup>",
-        description: "逆正弦"
+        description: "逆正弦の三角関数"
       },
       //逆余弦関数 "<mi>[aA]<\/mi><mi>r<\/mi><mi>c<\/mi><mi>c<\/mi><mi>o<\/mi><mi>s<\/mi>|<mi>c<\/mi><mi>o<\/mi><mi>s<\/mi><msup>(<mrow><\/mrow>|<mrow\/>)<mrow><mi>-<\/mi><mi>1<\/mi><\/mrow><\/msup>": "逆余弦 ",
 
       arccosine:{
         pattern: "<mi>[aA]<\/mi><mi>r<\/mi><mi>c<\/mi><mi>c<\/mi><mi>o<\/mi><mi>s<\/mi>|<mi>c<\/mi><mi>o<\/mi><mi>s<\/mi><msup>(<mrow><\/mrow>|<mrow\/>)<mrow><mi>-<\/mi><mi>1<\/mi><\/mrow><\/msup>",
-        description: "逆余弦"
+        description: "逆余弦の三角関数"
       },
       //逆正接関数 "<mi>[aA]<\/mi><mi>r<\/mi><mi>c<\/mi>(<mi>t<\/mi><mi>a<\/mi><mi>n<\/mi>|<mi>t<\/mi><mi>g<\/mi>)|(<mi>t<\/mi><mi>a<\/mi><mi>n<\/mi>|<mi>t<\/mi><mi>g<\/mi>)<msup>(<mrow><\/mrow>|<mrow\/>)<mrow><mi>-<\/mi><mi>1<\/mi><\/mrow><\/msup>": "逆正接 ",
       arctangent:{
         pattern: "<mi>[aA]<\/mi><mi>r<\/mi><mi>c<\/mi>(<mi>t<\/mi><mi>a<\/mi><mi>n<\/mi>|<mi>t<\/mi><mi>g<\/mi>)|(<mi>t<\/mi><mi>a<\/mi><mi>n<\/mi>|<mi>t<\/mi><mi>g<\/mi>)<msup>(<mrow><\/mrow>|<mrow\/>)<mrow><mi>-<\/mi><mi>1<\/mi><\/mrow><\/msup>",
-        description: "逆正接"
+        description: "逆正接の三角関数"
       },
       //逆余接関数 "<mi>[aA]<\/mi><mi>r<\/mi><mi>c<\/mi>(<mi>c<\/mi><mi>o<\/mi><mi>t<\/mi>|<mi>c<\/mi><mi>t<\/mi><mi>g<\/mi>|<mi>c<\/mi><mi>t<\/mi><mi>n<\/mi>)|(<mi>c<\/mi><mi>o<\/mi><mi>t<\/mi>|<mi>c<\/mi><mi>t<\/mi><mi>g<\/mi>|<mi>c<\/mi><mi>t<\/mi><mi>n<\/mi>)<msup>(<mrow><\/mrow>|<mrow\/>)<mrow><mi>-<\/mi><mi>1<\/mi><\/mrow><\/msup>": "逆余接 ",
       arccotangent:{
         pattern: "<mi>[aA]<\/mi><mi>r<\/mi><mi>c<\/mi>(<mi>c<\/mi><mi>o<\/mi><mi>t<\/mi>|<mi>c<\/mi><mi>t<\/mi><mi>g<\/mi>|<mi>c<\/mi><mi>t<\/mi><mi>n<\/mi>)|(<mi>c<\/mi><mi>o<\/mi><mi>t<\/mi>|<mi>c<\/mi><mi>t<\/mi><mi>g<\/mi>|<mi>c<\/mi><mi>t<\/mi><mi>n<\/mi>)<msup>(<mrow><\/mrow>|<mrow\/>)<mrow><mi>-<\/mi><mi>1<\/mi><\/mrow><\/msup>",
-        description: "逆余接"
+        description: "逆余接の三角関数"
       },
       //逆正割関数 "<mi>[aA]<\/mi><mi>r<\/mi><mi>c<\/mi><mi>s<\/mi><mi>e<\/mi><mi>c<\/mi>|<mi>s<\/mi><mi>e<\/mi><mi>c<\/mi><msup>(<mrow><\/mrow>|<mrow\/>)<mrow><mi>-<\/mi><mi>1<\/mi><\/mrow><\/msup>": "逆正割 ",
       arcsecant:{
         pattern: "<mi>[aA]<\/mi><mi>r<\/mi><mi>c<\/mi><mi>s<\/mi><mi>e<\/mi><mi>c<\/mi>|<mi>s<\/mi><mi>e<\/mi><mi>c<\/mi><msup>(<mrow><\/mrow>|<mrow\/>)<mrow><mi>-<\/mi><mi>1<\/mi><\/mrow><\/msup>",
-        description: "逆正割"
+        description: "逆正割の三角関数"
       },
       //逆余割関数 "<mi>[aA]<\/mi><mi>r<\/mi><mi>c<\/mi>(<mi>c<\/mi><mi>o<\/mi><mi>s<\/mi><mi>e<\/mi><mi>c<\/mi>|<mi>c<\/mi><mi>s<\/mi><mi>c<\/mi>)|(<mi>c<\/mi><mi>o<\/mi><mi>s<\/mi><mi>e<\/mi><mi>c<\/mi>|<mi>c<\/mi><mi>s<\/mi><mi>c<\/mi>)<msup>(<mrow><\/mrow>|<mrow\/>)<mrow><mi>-<\/mi><mi>1<\/mi><\/mrow><\/msup>": "逆余割 ",
 
       arccosecant:{
         pattern: "<mi>[aA]<\/mi><mi>r<\/mi><mi>c<\/mi>(<mi>c<\/mi><mi>o<\/mi><mi>s<\/mi><mi>e<\/mi><mi>c<\/mi>|<mi>c<\/mi><mi>s<\/mi><mi>c<\/mi>)|(<mi>c<\/mi><mi>o<\/mi><mi>s<\/mi><mi>e<\/mi><mi>c<\/mi>|<mi>c<\/mi><mi>s<\/mi><mi>c<\/mi>)<msup>(<mrow><\/mrow>|<mrow\/>)<mrow><mi>-<\/mi><mi>1<\/mi><\/mrow><\/msup>",
-        description: "逆余割"
+        description: "逆余割の三角関数"
       },
       //双曲線正弦 "<mi>s<\/mi><mi>i<\/mi><mi>n<\/mi><mi>h<\/mi>": "双曲線正弦 ",
       hyperbolicSine:{
         pattern: "<mi>s<\/mi><mi>i<\/mi><mi>n<\/mi><mi>h<\/mi>",
-        description: "双曲線正弦"
+        description: "双曲線正弦の三角関数"
       },
       //双曲線余弦関数 "<mi>c<\/mi><mi>o<\/mi><mi>s<\/mi><mi>h<\/mi>": "双曲線余弦 ",
       hyperbolicCosine:{
         pattern: "<mi>c<\/mi><mi>o<\/mi><mi>s<\/mi><mi>h<\/mi>",
-        description: "双曲線余弦"
+        description: "双曲線余弦の三角関数"
       },
       //双曲線正接関数  "<mi>t<\/mi><mi>a<\/mi><mi>n<\/mi><mi>h<\/mi>|<mi>t<\/mi><mi>g<\/mi><mi>h<\/mi>": "双曲線正接 ",
       hyperbolicTangent:{
         pattern: "<mi>t<\/mi><mi>a<\/mi><mi>n<\/mi><mi>h<\/mi>|<mi>t<\/mi><mi>g<\/mi><mi>h<\/mi>",
-        description: "双曲線正接"
+        description: "双曲線正接の三角関数"
       },
       //双曲線余接関数     "<mi>c<\/mi><mi>o<\/mi><mi>t<\/mi><mi>h<\/mi>|<mi>c<\/mi><mi>t<\/mi><mi>g<\/mi><mi>h<\/mi>|<mi>c<\/mi><mi>t<\/mi><mi>n<\/mi><mi>h<\/mi>": "双曲線余接 ",
       hyperbolicCotangent:{
         pattern: "<mi>c<\/mi><mi>o<\/mi><mi>t<\/mi><mi>h<\/mi>|<mi>c<\/mi><mi>t<\/mi><mi>g<\/mi><mi>h<\/mi>|<mi>c<\/mi><mi>t<\/mi><mi>n<\/mi><mi>h<\/mi>",
-        description: "双曲線余接"
+        description: "双曲線余接の三角関数"
       },
       //双曲線正割関数     "<mi>s<\/mi><mi>e<\/mi><mi>c<\/mi><mi>h<\/mi>": "双曲線正割 ",
       hyperbolicSecant:{
         pattern: "<mi>s<\/mi><mi>e<\/mi><mi>c<\/mi><mi>h<\/mi>",
-        description: "双曲線正割"
+        description: "双曲線正割の三角関数"
       },
       //双曲線余割関数    "<mi>c<\/mi><mi>o<\/mi><mi>s<\/mi><mi>e<\/mi><mi>c<\/mi><mi>h<\/mi>|<mi>c<\/mi><mi>s<\/mi><mi>c<\/mi><mi>h<\/mi>": "双曲線余割 ",
       hyperbolicCosecant:{
         pattern: "<mi>c<\/mi><mi>o<\/mi><mi>s<\/mi><mi>e<\/mi><mi>c<\/mi><mi>h<\/mi>|<mi>c<\/mi><mi>s<\/mi><mi>c<\/mi><mi>h<\/mi>",
-        description: "双曲線余割"
+        description: "双曲線余割の三角関数"
       },
       //双曲線逆正弦関数     "<mi>[aA]<\/mi><mi>r<\/mi><mi>s<\/mi><mi>i<\/mi><mi>n<\/mi><mi>h<\/mi>|<mi>s<\/mi><mi>i<\/mi><mi>n<\/mi><mi>h<\/mi><msup>(<mrow><\/mrow>|<mrow\/>)<mrow><mi>-<\/mi><mi>1<\/mi><\/mrow><\/msup>": "逆双曲線正弦 ",
       hyperbolicArcsine:{
         pattern: "<mi>[aA]<\/mi><mi>r<\/mi><mi>s<\/mi><mi>i<\/mi><mi>n<\/mi><mi>h<\/mi>|<mi>s<\/mi><mi>i<\/mi><mi>n<\/mi><mi>h<\/mi><msup>(<mrow><\/mrow>|<mrow\/>)<mrow><mi>-<\/mi><mi>1<\/mi><\/mrow><\/msup>",
-        description: "双曲線逆正弦"
+        description: "双曲線逆正弦の三角関数"
       },
       //双曲線逆余弦関数     "<mi>[aA]<\/mi><mi>r<\/mi><mi>c<\/mi><mi>o<\/mi><mi>s<\/mi><mi>h<\/mi>|<mi>c<\/mi><mi>o<\/mi><mi>s<\/mi><mi>h<\/mi><msup>(<mrow><\/mrow>|<mrow\/>)<mrow><mi>-<\/mi><mi>1<\/mi><\/mrow><\/msup>": "逆双曲線余弦 ",
       hyperbolicArccosine:{
         pattern: "<mi>[aA]<\/mi><mi>r<\/mi><mi>c<\/mi><mi>o<\/mi><mi>s<\/mi><mi>h<\/mi>|<mi>c<\/mi><mi>o<\/mi><mi>s<\/mi><mi>h<\/mi><msup>(<mrow><\/mrow>|<mrow\/>)<mrow><mi>-<\/mi><mi>1<\/mi><\/mrow><\/msup>",
-        description: "双曲線逆余弦"
+        description: "双曲線逆余弦の三角関数"
       },
       //双曲線逆正接関数     "<mi>[aA]<\/mi><mi>r<\/mi>(<mi>t<\/mi><mi>a<\/mi><mi>n<\/mi>|<mi>t<\/mi><mi>g<\/mi>)<mi>h<\/mi>|(<mi>t<\/mi><mi>a<\/mi><mi>n<\/mi>|<mi>t<\/mi><mi>g<\/mi>)<mi>h<\/mi><msup>(<mrow><\/mrow>|<mrow\/>)<mrow><mi>-<\/mi><mi>1<\/mi><\/mrow><\/msup>": "逆双曲線正接 ",
 
       hyperbolicArctangent:{
         pattern: "<mi>[aA]<\/mi><mi>r<\/mi>(<mi>t<\/mi><mi>a<\/mi><mi>n<\/mi>|<mi>t<\/mi><mi>g<\/mi>)<mi>h<\/mi>|(<mi>t<\/mi><mi>a<\/mi><mi>n<\/mi>|<mi>t<\/mi><mi>g<\/mi>)<mi>h<\/mi><msup>(<mrow><\/mrow>|<mrow\/>)<mrow><mi>-<\/mi><mi>1<\/mi><\/mrow><\/msup>",
-        description: "双曲線逆正接"
+        description: "双曲線逆正接の三角関数"
       },
       //双曲線逆余接関数     "<mi>[aA]<\/mi><mi>r<\/mi>(<mi>c<\/mi><mi>o<\/mi><mi>t<\/mi>|<mi>c<\/mi><mi>t<\/mi><mi>g<\/mi>|<mi>c<\/mi><mi>t<\/mi><mi>n<\/mi>)<mi>h<\/mi>|(<mi>c<\/mi><mi>o<\/mi><mi>t<\/mi>|<mi>c<\/mi><mi>t<\/mi><mi>g<\/mi>|<mi>c<\/mi><mi>t<\/mi><mi>n<\/mi>)<mi>h<\/mi><msup>(<mrow><\/mrow>|<mrow\/>)<mrow><mi>-<\/mi><mi>1<\/mi><\/mrow><\/msup>": "逆双曲線余接 ",
       hyperbolicArccotangent:{
         pattern: "<mi>[aA]<\/mi><mi>r<\/mi>(<mi>c<\/mi><mi>o<\/mi><mi>t<\/mi>|<mi>c<\/mi><mi>t<\/mi><mi>g<\/mi>|<mi>c<\/mi><mi>t<\/mi><mi>n<\/mi>)<mi>h<\/mi>|(<mi>c<\/mi><mi>o<\/mi><mi>t<\/mi>|<mi>c<\/mi><mi>t<\/mi><mi>g<\/mi>|<mi>c<\/mi><mi>t<\/mi><mi>n<\/mi>)<mi>h<\/mi><msup>(<mrow><\/mrow>|<mrow\/>)<mrow><mi>-<\/mi><mi>1<\/mi><\/mrow><\/msup>",
-        description: "双曲線逆余接"
+        description: "双曲線逆余接の三角関数"
       },
       //双曲線逆正割関数     "<mi>[aA]<\/mi><mi>r<\/mi><mi>s<\/mi><mi>e<\/mi><mi>c<\/mi><mi>h<\/mi>|<mi>s<\/mi><mi>e<\/mi><mi>c<\/mi><mi>h<\/mi><msup>(<mrow><\/mrow>|<mrow\/>)<mrow><mi>-<\/mi><mi>1<\/mi><\/mrow><\/msup>": "逆双曲線正割 ",
       hyperbolicArcsecant:{
         pattern: "<mi>[aA]<\/mi><mi>r<\/mi><mi>s<\/mi><mi>e<\/mi><mi>c<\/mi><mi>h<\/mi>|<mi>s<\/mi><mi>e<\/mi><mi>c<\/mi><mi>h<\/mi><msup>(<mrow><\/mrow>|<mrow\/>)<mrow><mi>-<\/mi><mi>1<\/mi><\/mrow><\/msup>",
-        description: "双曲線逆正割"
+        description: "双曲線逆正割の三角関数"
       },
       //双曲線逆余割関数     "<mi>[aA]<\/mi><mi>r<\/mi>(<mi>c<\/mi><mi>o<\/mi><mi>s<\/mi><mi>e<\/mi><mi>c<\/mi>|<mi>c<\/mi><mi>s<\/mi><mi>c<\/mi>)<mi>h<\/mi>|(<mi>c<\/mi><mi>o<\/mi><mi>s<\/mi><mi>e<\/mi><mi>c<\/mi>|<mi>c<\/mi><mi>s<\/mi><mi>c<\/mi>)<mi>h<\/mi><msup>(<mrow><\/mrow>|<mrow\/>)<mrow><mi>-<\/mi><mi>1<\/mi><\/mrow><\/msup>": "逆双曲線余割 ",
       hyperbolicArccosecant:{
         pattern: "<mi>[aA]<\/mi><mi>r<\/mi>(<mi>c<\/mi><mi>o<\/mi><mi>s<\/mi><mi>e<\/mi><mi>c<\/mi>|<mi>c<\/mi><mi>s<\/mi><mi>c<\/mi>)<mi>h<\/mi>|(<mi>c<\/mi><mi>o<\/mi><mi>s<\/mi><mi>e<\/mi><mi>c<\/mi>|<mi>c<\/mi><mi>s<\/mi><mi>c<\/mi>)<mi>h<\/mi><msup>(<mrow><\/mrow>|<mrow\/>)<mrow><mi>-<\/mi><mi>1<\/mi><\/mrow><\/msup>",
-        description: "双曲線逆余割"
+        description: "双曲線逆余割の三角関数"
       },
     },
     //特別曲線
@@ -374,9 +374,8 @@ var expressionDistinctionHash = function(n) {
     },
   };
 
-  var mathChange = new RegExp("<math xmlns=\"http://www.w3.org/1998/Math/MathML\">"); /* ここ弄ると、抽出結果画面が死ぬ */
+  var mathChange = new RegExp("<math xmlns=\"http://www.w3.org/1998/Math/MathML\">");
   var mrowChange = new RegExp("<mrow xmlns=\"http://www.w3.org/1998/Math/MathML\">");
-  
 
   // Continue with the remaining lines of the original code
   var treeDepth = 0;
@@ -386,66 +385,83 @@ var expressionDistinctionHash = function(n) {
   var matricsNum = 0;
   var outerMatricsNum = 0;
   var munderoverCount = 0;
-  var equationFlag=0;
+  var equationFlag = 0;
+  var outputStr;
 
-  var futougouFlag=0;
-  
+  var futougouFlag = 0;
+
   var regStr;
   var matrics = new Array();
   var outerMatrics = new Array();
   var mtds = new Array();
   var mtrs;
-  var rows,columns;
-  var i,j,k= 0;
-  var diagonalFlag=0;
-  var scalarFlag=0;
-  var identityFlag=0;
-  var zeroFlag=0;
-  var symmetricFlag=0;
-  var upperTriangularFlag=0;
-  var lowerTriangularFlag=0;
+  var rows, columns;
+  var i = 0, j, k = 0;
+  var diagonalFlag = 0;
+  var scalarFlag = 0;
+  var identityFlag = 0;
+  var zeroFlag = 0;
+  var symmetricFlag = 0;
+  var upperTriangularFlag = 0;
+  var lowerTriangularFlag = 0;
 
-  str = str.replace(mathChange,"<math>");
-  str = str.replace(mrowChange,"<mrow>");
+  str = str.replace(mathChange, "<math>");
+  str = str.replace(mrowChange, "<mrow>");
 
- //その他*/
   var equalCheckStr = "";
-
   var nijiCheckStr = "";
   var futougouCheckStr = "";
 
-
-
   // Utility function to handle closing tags
-function handleCloseTag(tag, length) {
-  treeDepth--;
-  i += length;
-}
-
-// Utility function to handle opening tags
-function handleOpenTag(tag, length) {
-  treeStack[treeDepth] = tag;
-  treeDepth++;
-  i += length;
-}
-//hashmapのキーと値を取得関数
-function distinguishExpression(input) {
-  let outputStr = "";
-
-  for (const category in regexMap) {
-    for (const type in regexMap[category]) {
-      const pattern = new RegExp(regexMap[category][type].pattern);
-      if (pattern.test(input)) {
-        outputStr += regexMap[category][type].description + " ";
-      }
-    }
+  function handleCloseTag(tag, length) {
+    treeDepth--;
+    i += length;
   }
 
-  return outputStr.trim();
-}
+  // Utility function to handle opening tags
+  function handleOpenTag(tag, length) {
+    treeStack[treeDepth] = tag;
+    treeDepth++;
+    i += length;
+  }
+
+  //hashmapのキーと値を取得関数
+  function distinguishExpression(input) {
+    let outputStr = "";
+
+    for (const category in regexMap) {
+      for (const type in regexMap[category]) {
+        const pattern = new RegExp(regexMap[category][type].pattern);
+        if (pattern.test(input)) {
+          outputStr += regexMap[category][type].description + " ";
+        }
+      }
+    }
+
+    return outputStr.trim();
+  }
+//ハッシュマプでのキーと値の取得
+const tagOperations = {
+  "<mi>": { open: 4, close: 5 },
+  "<mtr>": { open: 5, close: 6 },
+  "<mtd>": { open: 5, close: 6 },
+  "<mrow>": { open: 6, close: 7 },
+  "<math>": { open: 6, close: 7 },
+  "<msub>": { open: 6, close: 7 },
+  "<msup>": { open: 6, close: 7 },
+  "<mfrac>": { open: 7, close: 8 },
+  "<mover>": { open: 7, close: 8 },
+  "<mroot>": { open: 7, close: 8 },
+  "<msqrt>": { open: 7, close: 8 },
+  "<munder>": { open: 8, close: 9 },
+  "<mtable>": { open: 8, close: 9 },
+  "<msubsup>": { open: 9, close: 10 },
+  "<munderover>": { open: 12, close: 13 },
+  "<math mathsize=\"250%\" xmlns=\"http://www.w3.org/1998/Math/MathML\">": { open: 65, close: 7 }
+};
 
 // Main loop to analyze the string
-while (i < str.length) {
+/*while (i < str.length) {
   let substr = str.substr(i);
   if (substr.startsWith("<mi>(</mi><mtable>") || substr.startsWith("<mi>[</mi><mtable>")) {
     mtableStack[mtableDepth] = i;
@@ -499,7 +515,7 @@ while (i < str.length) {
       equationFlag = 1;
     }
     i++;
-  } /*else if (substr.charAt(0) == "≥" || substr.charAt(0) == "≤" || substr.startsWith("&gt;") || substr.startsWith("&lt;")) {
+  } else if (substr.charAt(0) == "≥" || substr.charAt(0) == "≤" || substr.startsWith("&gt;") || substr.startsWith("&lt;")) {
     if (treeStack[treeDepth - 3] == "<math mathsize=\"250%\" xmlns=\"http://www.w3.org/1998/Math/MathML\">") {
       futougouFlag = 1;
     } else if (treeStack[treeDepth - 5] == "<math>" && 
@@ -508,13 +524,57 @@ while (i < str.length) {
       futougouFlag = 1;
     }
     i++;
-  } */else {
+  } else {
     i++;
+  }
+}
+*/
+while (i < str.length) {
+  let substr = str.substr(i);
+  let matched = false;
+  for (const [tag, ops] of Object.entries(tagOperations)) {
+    if (substr.startsWith(tag)) {
+      //例として、"mi"の場合
+      handleOpenTag(tag, ops.open);
+      matched = true;
+      break;
+    } else if (substr.startsWith(tag.replace("<", "<\/"))) {
+      //例として、<mi>の"<"を"</"に置き換え、</mi>になる場合
+      handleCloseTag(tag, ops.close);
+      matched = true;
+      break;
+    }
+  }
+  if (!matched) {
+    if (substr.charAt(0) == "=") {
+      if (treeStack[treeDepth - 3] == "<math mathsize=\"250%\" xmlns=\"http://www.w3.org/1998/Math/MathML\">") {
+        equationFlag = 1;
+      } else if (treeStack[treeDepth - 5] == "<math>" &&
+        (treeStack[treeDepth - 3] == "<munder>" || treeStack[treeDepth - 3] == "<mover>" || treeStack[treeDepth - 3] == "<munderover>") &&
+        munderoverCount == 1) {
+        equationFlag = 1;
+      }
+      i++;
+      
+    } else if (substr.startsWith("<mi>[<\/mi><mtable>") || substr.startsWith("<mi>(<\/mi><mtable>")) {
+      mtableStack[mtableDepth] = i;
+      mtableDepth++;
+      i += 18;
+    } else if (substr.startsWith("<\/mtable><mi>]<\/mi>") || substr.startsWith("<\/mtable><mi>)<\/mi>")) {
+      mtableDepth--;
+      matrics[matricsNum] = str.substring(mtableStack[mtableDepth], i + 19);
+      if (mtableDepth == 0) outerMatrics[outerMatricsNum++] = matrics[matricsNum];
+      matricsNum++;
+      i += 19;
+    } else {
+      i++;
+    }
   }
 }
 
 
 // 使用例
+let outputStr = "";
 if (equationFlag == 1) {
   outputStr = distinguishExpression(str);
   equalCheckStr = "方程式";
