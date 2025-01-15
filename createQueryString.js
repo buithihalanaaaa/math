@@ -103,10 +103,6 @@ var createQueryString = function(queryMml)
                 {
                     return '\\s*';
                 }
-                else if($(e).hasClass('custom-regex-az'))
-                {
-                    return '[a-zA-Z]';
-                }
                 else if($(e).hasClass('custom-regex-d'))
                 {
                     return '\\d';
@@ -140,7 +136,7 @@ var escape = function(c)
 	var escapeChar = [
 		'.', '*', '+', '?', '|', 
 		'(', ')', '[', ']', '{', '}', 
-		'^', '&', ';', '\\', 's', 'd',
+		'^', '&', ';', '\\',
 	];
 	for(var i=0; i<escapeChar.length; i++)
 	{
