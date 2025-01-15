@@ -13,6 +13,9 @@ var name;
 var extractionNum = 6; // 学習項目抽出結果ウィンドウで検索する内容の数だけ、配列を定義したい。今は微分・行列・二次式の3種類それぞれの方程式と不等式の2パターンで3*2=6を定義
 //var extractionFlag[extractionNum]; //extractionFlag[0]が微分方程式のフラグ、extractionFlag[1]が行列方程式のフラグ…と定義。学習項目抽出のところで使う.
 var extractionFlag = new Array();
+//図形の学習項目抽出結果ウィンドウで検索する内容の今は直線・円形・放物線・楕円・分子関数・対数関数・指数関数・無理関数・などを17パターンで定義
+var extractionNum_zukei = 17;
+var extractionFlag_zukei = new Array();
 var select2;
 var resetNum = 0;
 
@@ -195,6 +198,23 @@ var testDriver = function() {
     xhr.open("get", "formula_flaged.csv", true);
     xhr.send(null);
 
+    
+     // 図形の学習項目抽出結果にハイライト用
+     var xhr_zukei = new XMLHttpRequest();
+     xhr_zukei.onload = function() {
+         var responcet_zukei = xhr_zukei.responseText; 
+         var tempArray_zukei = responcet_zukei.split("\n");
+         csvArray_zukei = new Array(); /* グローバル変数にしたいので、varつけない */
+         for (var i = 0; i < tempArray_zukei.length; i++) {
+             csvArray_zukei[i] = tempArray_zukei[i].split(",");
+         }
+         //console.log(csvArray);
+         //console.log(csvArray[1]);
+         //console.log(csvArray.length);
+     }
+     xhr_zukei.open("get", "formula_zukei.csv", true);
+     xhr_zukei.send(null);
+    
     var xhr_fnames = new XMLHttpRequest();
     xhr_fnames.onload = function() {
         var responcet_fnames = xhr_fnames.responseText;
@@ -340,6 +360,13 @@ var testDriver = function() {
         console.log(queryString);
         // $('.query-string')[0].value = queryString;
         runMathRegexp(queryString);
+    });
+
+    $('.search_zukei').click(function(e) {
+        //console.log("search_zukeiボタンがクリックされました");
+        var queryString = createQueryString(mml);
+        console.log(queryString);
+        runMathFlagRegexp(queryString);
     });
 
     $('.study').click(function(e) {
@@ -1017,7 +1044,340 @@ var runMathRegexp = function(queryString) {
      */
     // HTMLPrint.text('num', nOfMatched+' / '+nOfFormulae);
 };
+var runMathFlagRegexp = function(queryString) {
 
+
+    $('#matched').html('<br />');
+    $('#num').html('<br />');
+    //クリエのトークン化と解析
+    var tokens_zukei = queryTokenize(queryString);  //トークン列
+    var parsedQuery_zukei = queryParse(tokens_zukei);     //Onigmoパターン．parsedQuery_zukeiは，queryとn(後方参照の数)の2つのプロパティから成る．
+
+    if (!parsedQuery_zukei) {
+        HTMLPrint.text('num', 'invalid query');
+        return;
+    }
+    console.log(queryString);
+    console.log(parsedQuery_zukei);
+    console.log(parsedQuery_zukei.query);
+
+    if (koushikiSearchFlag != 0) {
+        var queryparseindex;
+        var parsetoken;
+        queryparseindex = queryString.indexOf("=");
+        if (queryparseindex == -1) {
+            queryparseindex = queryString.indexOf("≤");
+            if (queryparseindex == -1) {
+                queryparseindex = queryString.indexOf("≥");
+                if (queryparseindex == -1) {
+                    queryparseindex = queryString.indexOf("\<");
+                    if (queryparseindex == -1) {
+                        queryparseindex = queryString.indexOf("\>");
+                        if (koushikiindex == -1) {
+                            koushikiindex = 0;
+                            parsetoken = "";
+                        } else {
+                            parsetoken = "\>";
+                        }
+                    } else {
+                        parsetoken = "\<";
+                    }
+                } else {
+                    parsetoken = "≥";
+                }
+            } else {
+                parsetoken = "≤";
+            }
+        } else {
+            parsetoken = "=";
+        }
+        console.log(queryparseindex);
+        var koushikiquery_l = queryString.substring(0, queryparseindex); //クエリの文字列版を左辺右辺に分解
+        var koushikiquery_r = queryString.substr(queryparseindex + 1);
+        console.log(koushikiquery_l);
+        console.log(koushikiquery_r);
+        var tokens_zukeil = queryTokenize(koushikiquery_l); //左辺右辺それぞれの一文字ずつの分解
+        var tokens_zukeir = queryTokenize(koushikiquery_r);
+        var parsedQuery_zukeil = queryParse(tokens_zukeil);
+        var parsedQuery_zukeir = queryParse(tokens_zukeir);
+
+        console.log(parsedQuery_zukeil);
+        console.log(parsedQuery_zukeir);
+    }
+
+    var test = document.createElement('div');
+    test.getNextNodeByLocalName('test');
+
+    var subDoc = window.opener.document;
+    /*********
+     * ここから，検証(マッチング)．
+     *********/
+    //最初のmath要素を全て取得
+    var targetMathElements = $(subDoc).find("math");
+    /*
+     * 数式をすべてstr化
+     */
+    var strs = [];
+    var distinctions = []; //数式特徴の配列
+    var distinctionsOutput = [];
+    var parents = [];
+    // var nextSiblings = [];
+    var nOfFormulae = 0; //数式の数
+
+    var left1 = new RegExp("<mi>\\(<\/mi>", "g");
+    var right1 = new RegExp("<mi>\\)<\/mi>", "g");
+    var left2 = new RegExp("<mi>\\[<\/mi>", "g");
+    var right2 = new RegExp("<mi>\\]<\/mi>", "g");
+
+    var koushikistring_l = new Array();
+    var koushikistring_r = new Array();
+    var koushikiparsetoken = new Array();
+
+    for (var i = 0; i < targetMathElements.length; i++) {
+
+        normalizePmmlTree(targetMathElements[i]); //正規化。中身は普通にmathml文
+        console.log(targetMathElements[i]);
+        mathStr = createMathTreeString(targetMathElements[i]); //mathml文のmathStrを,onigmoパターンの文字列(:とかめっちゃ使うアレ)に変形している…
+        console.log(mathStr);
+        strs.push(mathStr); //保存
+
+        //1218追加ここから
+
+        var koushikiindex;
+
+        koushikiindex = mathStr.indexOf("=");
+        if (koushikiindex == -1) {
+            koushikiindex = mathStr.indexOf("≤");
+            if (koushikiindex == -1) {
+                koushikiindex = mathStr.indexOf("≥");
+                if (koushikiindex == -1) {
+                    koushikiindex = mathStr.indexOf("\<");
+                    if (koushikiindex == -1) {
+                        koushikiindex = mathStr.indexOf("\>");
+                        if (koushikiindex == -1) {
+                            koushikiindex = 0;
+                            koushikiparsetoken[i] = "";
+                        } else {
+                            koushikiparsetoken[i] = "\>";
+                        }
+                    } else {
+                        koushikiparsetoken[i] = "\<";
+                    }
+                } else {
+                    koushikiparsetoken[i] = "≥";
+                }
+            } else {
+                koushikiparsetoken[i] = "≤";
+            }
+        } else {
+            koushikiparsetoken[i] = "=";
+        }
+
+
+        console.log(koushikiindex);
+        koushikistring_l[i] = mathStr.substring(0, koushikiindex); //onigmoパターンの左辺を保存
+        koushikistring_r[i] = mathStr.substr(koushikiindex + 1); //onigmoパターンの右辺を保存
+        //console.log(koushikistring_l);
+        //console.log(koushikistring_r);
+        //1218追加ここまで
+
+        mathStr = createMathTreeStringT(targetMathElements[i]); //onigmoパターンの文字列になっていたmathStrを,通常のmathml文に戻す
+        //console.log(mathStr); //この時点では、まだただの木構造
+        distinctions.push(mathStr); /* ここで、distinctionsの中に、抽出結果ウィンドウに表示するmathml文が入る */
+        parents.push(targetMathElements[i].parentNode);
+        // nextSiblings.push(targetMathElements[i].nextSibling);
+
+    }
+
+    var distinctionStr_zukei;
+    var outputStr_zukei;
+    console.log(strs);
+    var strssize = strs.length
+    console.log(strssize);
+    //console.log(targetMathElements[0]);
+    //console.log(targetMathElements[1]);
+
+    nwin = window.open("", "図形の学習項目抽出結果", "width=720,height=720");
+    nwin.document.open();
+    nwin.document.write("<HTML><HEAD>");
+    nwin.document.write("<TITLE>図形の学習項目抽出結果</TITLE>");
+    nwin.document.writeln("<BODY>");
+    for (var mathStr of distinctions) {
+        outputStr_zukei = mathStr;
+        //console.log(outputStr_zukei);
+        distinctionStr = expressionDistinctionHash(mathStr);
+        console.log(distinctionStr);
+        if (extractionFlag_zukei[0] == 1 && distinctionStr_zukei.indexOf('直線') != -1) {
+            outputStr_zukei = outputStr_zukei.replace("<math mathsize=\"250%\" xmlns=\"http://www.w3.org/1998/Math/MathML\"><mrow>", "<math mathsize=\"250%\" xmlns=\"http://www.w3.org/1998/Math/MathML\"><mrow><mstyle mathbackground=\"yellow\"><mrow>");
+            outputStr_zukei = outputStr_zukei.replace("<\/mrow><\/math>", "<\/mrow><\/mstyle><\/mrow><\/math>");
+        } else if (extractionFlag_zukei[1] == 1 && distinctionStr_zukei.indexOf('円形') != -1) {
+            outputStr_zukei = outputStr_zukei.replace("<math mathsize=\"250%\" xmlns=\"http://www.w3.org/1998/Math/MathML\"><mrow>", "<math mathsize=\"250%\" xmlns=\"http://www.w3.org/1998/Math/MathML\"><mrow><mstyle mathbackground=\"yellow\"><mrow>");
+            outputStr_zukei = outputStr_zukei.replace("<\/mrow><\/math>", "<\/mrow><\/mstyle><\/mrow><\/math>");
+        } else if (extractionFlag_zukei[2] == 1 && distinctionStr_zukei.indexOf('放物線') != -1) {
+            outputStr_zukei = outputStr_zukei.replace("<math mathsize=\"250%\" xmlns=\"http://www.w3.org/1998/Math/MathML\"><mrow>", "<math mathsize=\"250%\" xmlns=\"http://www.w3.org/1998/Math/MathML\"><mrow><mstyle mathbackground=\"yellow\"><mrow>");
+            outputStr_zukei = outputStr_zukei.replace("<\/mrow><\/math>", "<\/mrow><\/mstyle><\/mrow><\/math>");
+        } else if (extractionFlag_zukei[3] == 1 && distinctionStr_zukei.indexOf('対数関数') != -1) {
+            outputStr_zukei = outputStr_zukei.replace("<math mathsize=\"250%\" xmlns=\"http://www.w3.org/1998/Math/MathML\"><mrow>", "<math mathsize=\"250%\" xmlns=\"http://www.w3.org/1998/Math/MathML\"><mrow><mstyle mathbackground=\"yellow\"><mrow>");
+            outputStr_zukei = outputStr_zukei.replace("<\/mrow><\/math>", "<\/mrow><\/mstyle><\/mrow><\/math>");
+        } else if (extractionFlag_zukei[4] == 1 && distinctionStr_zukei.indexOf('指数関数') != -1) {
+            outputStr_zukei = outputStr_zukei.replace("<math mathsize=\"250%\" xmlns=\"http://www.w3.org/1998/Math/MathML\"><mrow>", "<math mathsize=\"250%\" xmlns=\"http://www.w3.org/1998/Math/MathML\"><mrow><mstyle mathbackground=\"yellow\"><mrow>");
+            outputStr_zukei = outputStr_zukei.replace("<\/mrow><\/math>", "<\/mrow><\/mstyle><\/mrow><\/math>");
+        } else if (extractionFlag_zukei[5] == 1 && distinctionStr_zukei.indexOf('楕円') != -1) {
+            outputStr_zukei = outputStr_zukei.replace("<math mathsize=\"250%\" xmlns=\"http://www.w3.org/1998/Math/MathML\"><mrow>", "<math mathsize=\"250%\" xmlns=\"http://www.w3.org/1998/Math/MathML\"><mrow><mstyle mathbackground=\"yellow\"><mrow>");
+            outputStr_zukei = outputStr_zukei.replace("<\/mrow><\/math>", "<\/mrow><\/mstyle><\/mrow><\/math>");
+        }else if(extractionFlag_zukei[6] == 1 && distinctionStr_zukei.indexOf('双曲線') != -1){
+            outputStr_zukei = outputStr_zukei.replace("<math mathsize=\"250%\" xmlns=\"http://www.w3.org/1998/Math/MathML\"><mrow>", "<math mathsize=\"250%\" xmlns=\"http://www.w3.org/1998/Math/MathML\"><mrow><mstyle mathbackground=\"yellow\"><mrow>");
+            outputStr_zukei = outputStr_zukei.replace("<\/mrow><\/math>", "<\/mrow><\/mstyle><\/mrow><\/math>");
+        }else if(extractionFlag_zukei[7] == 1 && distinctionStr_zukei.indexOf('分子関数') != -1){
+            outputStr_zukei = outputStr_zukei.replace("<math mathsize=\"250%\" xmlns=\"http://www.w3.org/1998/Math/MathML\"><mrow>", "<math mathsize=\"250%\" xmlns=\"http://www.w3.org/1998/Math/MathML\"><mrow><mstyle mathbackground=\"yellow\"><mrow>");
+            outputStr_zukei = outputStr_zukei.replace("<\/mrow><\/math>", "<\/mrow><\/mstyle><\/mrow><\/math>");
+        }else if(extractionFlag_zukei[8] == 1 && distinctionStr_zukei.indexOf('無理関数') != -1){
+            outputStr_zukei = outputStr_zukei.replace("<math mathsize=\"250%\" xmlns=\"http://www.w3.org/1998/Math/MathML\"><mrow>", "<math mathsize=\"250%\" xmlns=\"http://www.w3.org/1998/Math/MathML\"><mrow><mstyle mathbackground=\"yellow\"><mrow>");
+            outputStr_zukei = outputStr_zukei.replace("<\/mrow><\/math>", "<\/mrow><\/mstyle><\/mrow><\/math>");
+        }else if(extractionFlag_zukei[9] == 1 && distinctionStr_zukei.indexOf('連立1次関数') != -1){
+            outputStr_zukei = outputStr_zukei.replace("<math mathsize=\"250%\" xmlns=\"http://www.w3.org/1998/Math/MathML\"><mrow>", "<math mathsize=\"250%\" xmlns=\"http://www.w3.org/1998/Math/MathML\"><mrow><mstyle mathbackground=\"yellow\"><mrow>");
+            outputStr_zukei = outputStr_zukei.replace("<\/mrow><\/math>", "<\/mrow><\/mstyle><\/mrow><\/math>");
+        }else if(extractionFlag_zukei[10] == 1 && distinctionStr_zukei.indexOf('三角関数') != -1){
+            outputStr_zukei = outputStr_zukei.replace("<math mathsize=\"250%\" xmlns=\"http://www.w3.org/1998/Math/MathML\"><mrow>", "<math mathsize=\"250%\" xmlns=\"http://www.w3.org/1998/Math/MathML\"><mrow><mstyle mathbackground=\"yellow\"><mrow>");
+            outputStr_zukei = outputStr_zukei.replace("<\/mrow><\/math>", "<\/mrow><\/mstyle><\/mrow><\/math>");
+        }else if(extractionFlag_zukei[11] == 1 && distinctionStr_zukei.indexOf('リサージュ曲線') != -1){
+            outputStr_zukei = outputStr_zukei.replace("<math mathsize=\"250%\" xmlns=\"http://www.w3.org/1998/Math/MathML\"><mrow>", "<math mathsize=\"250%\" xmlns=\"http://www.w3.org/1998/Math/MathML\"><mrow><mstyle mathbackground=\"yellow\"><mrow>");
+            outputStr_zukei = outputStr_zukei.replace("<\/mrow><\/math>", "<\/mrow><\/mstyle><\/mrow><\/math>");
+        }else if(extractionFlag_zukei[12] == 1 && distinctionStr_zukei.indexOf('アステロイド曲線') != -1){
+            outputStr_zukei = outputStr_zukei.replace("<math mathsize=\"250%\" xmlns=\"http://www.w3.org/1998/Math/MathML\"><mrow>", "<math mathsize=\"250%\" xmlns=\"http://www.w3.org/1998/Math/MathML\"><mrow><mstyle mathbackground=\"yellow\"><mrow>");
+            outputStr_zukei = outputStr_zukei.replace("<\/mrow><\/math>", "<\/mrow><\/mstyle><\/mrow><\/math>");
+        }else if(extractionFlag_zukei[13] == 1 && distinctionStr_zukei.indexOf('サイクロイド') != -1){
+            outputStr_zukei = outputStr_zukei.replace("<math mathsize=\"250%\" xmlns=\"http://www.w3.org/1998/Math/MathML\"><mrow>", "<math mathsize=\"250%\" xmlns=\"http://www.w3.org/1998/Math/MathML\"><mrow><mstyle mathbackground=\"yellow\"><mrow>");
+            outputStr_zukei = outputStr_zukei.replace("<\/mrow><\/math>", "<\/mrow><\/mstyle><\/mrow><\/math>");
+        }else if(extractionFlag_zukei[14] == 1 && distinctionStr_zukei.indexOf('アルキメデスの渦巻線') != -1){
+            outputStr_zukei = outputStr_zukei.replace("<math mathsize=\"250%\" xmlns=\"http://www.w3.org/1998/Math/MathML\"><mrow>", "<math mathsize=\"250%\" xmlns=\"http://www.w3.org/1998/Math/MathML\"><mrow><mstyle mathbackground=\"yellow\"><mrow>");
+            outputStr_zukei = outputStr_zukei.replace("<\/mrow><\/math>", "<\/mrow><\/mstyle><\/mrow><\/math>");
+        }else if(extractionFlag_zukei[15] == 1 && distinctionStr_zukei.indexOf('正葉曲線') != -1){
+            outputStr_zukei = outputStr_zukei.replace("<math mathsize=\"250%\" xmlns=\"http://www.w3.org/1998/Math/MathML\"><mrow>", "<math mathsize=\"250%\" xmlns=\"http://www.w3.org/1998/Math/MathML\"><mrow><mstyle mathbackground=\"yellow\"><mrow>");
+            outputStr_zukei = outputStr_zukei.replace("<\/mrow><\/math>", "<\/mrow><\/mstyle><\/mrow><\/math>");
+        }else if(extractionFlag_zukei[16] == 1 && distinctionStr_zukei.indexOf('カージオイド') != -1){
+            outputStr_zukei = outputStr_zukei.replace("<math mathsize=\"250%\" xmlns=\"http://www.w3.org/1998/Math/MathML\"><mrow>", "<math mathsize=\"250%\" xmlns=\"http://www.w3.org/1998/Math/MathML\"><mrow><mstyle mathbackground=\"yellow\"><mrow>");
+            outputStr_zukei = outputStr_zukei.replace("<\/mrow><\/math>", "<\/mrow><\/mstyle><\/mrow><\/math>");
+        }
+        nwin.document.writeln(outputStr_zukei);
+        nwin.document.write("<br/>");
+        distinctionStr_zukei = expressionDistinctionHash(mathStr);
+        nwin.document.writeln(distinctionStr);
+        nwin.document.write("<br/>");
+        nwin.document.write("<br/>");
+    }
+    nwin.document.write("</BODY></HTML>");
+    nwin.document.close();
+
+    var rbFileName = '';
+
+    var results;
+    console.log(strs);
+    console.log(koushikiSearchFlag);
+
+
+    if (koushikiSearchFlag == 0) {
+        rbFileName = 'http://localhost/~cs19044/MathematicaExpresssionSearchSystem/mreg.rb'; //ハイライトのための処理
+        console.log(parsedQuery_zukei.query);
+        console.log(strs);
+        //var testquery = new RegExp(parsedQuery_zukei.query,"g");
+        //console.log(testquery);
+
+        $.ajax({
+            type: 'POST',
+            url: rbFileName,
+            async: false,
+            traditional: true,
+            data: {
+                n: parsedQuery_zukei.n, //後方参照の番号
+                originalQuery: queryString, //検索クエリの通常の文字列
+                query: parsedQuery_zukei.query, //検索クエリの
+                math: strs,
+            },
+            success: function(json) {
+                results = json.results;
+            },
+            error: function(XMLHttpRequest, textStatus, errorThrown) {
+                alert(
+                    'XMLHttpRequest : ' + XMLHttpRequest.status + '\n' +
+                    'textStatus : ' + textStatus + '\n' +
+                    'errorThrown : ' + errorThrown.message
+                );
+            },
+        });
+    } else if (koushikiSearchFlag == 3) {
+        rbFileName = 'http://localhost/~cs19044/MathematicaExpresssionSearchSystem/mreg.rb';  /* ファイル名は.rb含めて7文字までじゃないとエラー */
+        console.log('ここまできたよ');
+
+        console.log(parsedQuery_zukeil.query);
+        console.log(parsedQuery_zukeir.query);
+        console.log(parsetoken);
+        console.log(koushikistring_l);
+        console.log(koushikistring_r);
+        console.log(koushikiparsetoken);
+        console.log(strs);
+
+
+
+        $.ajax({
+            type: 'POST',
+            url: rbFileName,
+            async: false,
+            traditional: true,
+            data: {
+                n: parsedQuery_zukei.n, //後方参照の番号
+                originalQuery: queryString, //検索クエリの通常の文字列
+                query: parsedQuery_zukei.query, //検索クエリのクエリ部分
+                queryl: parsedQuery_zukeil.query,
+                queryr: parsedQuery_zukeir.query, //
+                queryparser: parsetoken, //検索クエリの等号とか不等号部分。ピタゴラスなら＝、相加相乗なら>=
+                mathl: koushikistring_l, //公式検索時に使用する、検索対象mathml文の左辺
+                mathr: koushikistring_r, //公式検索時に使用する、検索対象mathml文の右辺
+                mathparser: koushikiparsetoken, // 検索対象mathmlの等号とか不等号全部が入った配列
+                math: strs,
+                size: strssize,
+            },
+            success: function(json) {
+                results = json.results;
+            },
+            error: function(XMLHttpRequest, textStatus, errorThrown) {
+                alert(
+                    'XMLHttpRequest : ' + XMLHttpRequest.status + '\n' +
+                    'textStatus : ' + textStatus + '\n' +
+                    'errorThrown : ' + errorThrown.message
+                );
+            },
+        });
+    }
+
+
+    var nOfMatched = 0; //マッチした式の数
+    console.log(results); //対称ページすべてのMathML文に検索をかけた後の、mstyle要素追加済みデータのOnigmo変換後
+ 
+    var left1 = new RegExp("<mi>\\(<\/mi>", "g");
+    var right1 = new RegExp("<mi>\\)<\/mi>", "g");
+    var left2 = new RegExp("<mi>\\[<\/mi>", "g");
+    var right2 = new RegExp("<mi>\\]<\/mi>", "g");
+
+    //var mstyle = new RegExp("mstyle","g");
+    var math_tag = new RegExp("<math", "g");
+
+    //div = div + "<br\/>" + "<math";
+
+    var newinner;
+    var newouter;
+
+    for (var i = 0; i < results.length; i++) {
+        var tokens_zukei = tokenizeParsedString(results[i]); //ページ内全てのmathml文を分割し、一文字ずつ配列に格納。sinxなら[0]=s, [1]=i, ...
+        //console.log(tokens_zukei);
+        var replacedMath = buildMathMLFromParsedString(tokens_zukei, 0);
+        //console.log(replacedMath);
+
+        replacedMath.setAttribute('mathsize', '350%');
+
+        parents[i].replaceChild(replacedMath, targetMathElements[i]);
+    }
+};
 
 
 // ショートカットキー

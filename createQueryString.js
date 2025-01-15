@@ -75,6 +75,8 @@ var createQueryString = function(queryMml)
 							content += processSingleElement($(style.children[i]).find('.integration-node')[0]) + '|';
 						}
 						content = content.substring(0, content.length-1);
+					}else if($(e).hasClass('custom-regex-pattern')){
+						content = $(e).data('regex-pattern'); 
 					}
 					else
 					{
@@ -97,6 +99,18 @@ var createQueryString = function(queryMml)
 					//
 					return regexpString;
 				}
+                else if($(e).hasClass('custom-regex-s'))
+                {
+                    return '\\s*';
+                }
+                else if($(e).hasClass('custom-regex-az'))
+                {
+                    return '[a-zA-Z]';
+                }
+                else if($(e).hasClass('custom-regex-d'))
+                {
+                    return '\\d';
+                }
 				else
 				{
 					var test = e;
@@ -126,7 +140,7 @@ var escape = function(c)
 	var escapeChar = [
 		'.', '*', '+', '?', '|', 
 		'(', ')', '[', ']', '{', '}', 
-		'^', '&', ';', '\\',  
+		'^', '&', ';', '\\', 's', 'd',
 	];
 	for(var i=0; i<escapeChar.length; i++)
 	{
