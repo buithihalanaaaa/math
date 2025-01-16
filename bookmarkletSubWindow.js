@@ -18,12 +18,16 @@ var extractionNum_zukei = 17;
 var extractionFlag_zukei = new Array();
 var select2;
 var resetNum = 0;
+var resetNum_zukei = 0;
 
 while (resetNum < extractionNum) { //配列の値を全て初期化
     extractionFlag[resetNum] = 0;
     resetNum++;
 }
-
+while (resetNum_zukei < extractionNum_zukei) { //配列の値を全て初期化
+    extractionFlag_zukei[resetNum_zukei] = 0;
+    resetNum_zukei++;
+}
 var koushikiSearchFlag = 0;
 var table_count = 0;
 var jikken_flag = 0;
@@ -205,8 +209,8 @@ var testDriver = function() {
          var responcet_zukei = xhr_zukei.responseText; 
          var tempArray_zukei = responcet_zukei.split("\n");
          csvArray_zukei = new Array(); /* グローバル変数にしたいので、varつけない */
-         for (var i = 0; i < tempArray_zukei.length; i++) {
-             csvArray_zukei[i] = tempArray_zukei[i].split(",");
+         for (var i_zukei = 0; i_zukei < tempArray_zukei.length; i_zukei++) {
+             csvArray_zukei[i_zukei] = tempArray_zukei[i_zukei].split(",");
          }
          //console.log(csvArray);
          //console.log(csvArray[1]);
@@ -363,7 +367,60 @@ var testDriver = function() {
     });
 
     $('.search_zukei').click(function(e) {
-        //console.log("search_zukeiボタンがクリックされました");
+        //履歴表示のための動作
+        var history_zukei = document.getElementById("HistoryQueryView");
+        var history_table = document.getElementById("history_table");
+        var button = document.getElementById("copy");
+        console.log("mml");
+        console.log(mml);
+        mml_history = mml;
+        if (table_count != 0) {
+            var newRow = history_table.insertRow(0);
+            //var i;
+            //for (i = 0; i < history_table.rows[0].cells.length; i++) {
+            // 新しい行にセルを作っていく
+            var newCell = newRow.insertCell();
+            newCell.innerHTML = mml_history.outerHTML.replace("<mrow class=\"integration-node highlight\">", "<mrow class=\"integration-node\">");
+            var newCell2 = newRow.insertCell();
+            newCell2.innerHTML = "<input type=\"button\" value=\"copy\" class=\"copy\" id=\"copy\"/>";
+            //newCell2.innerHTML = button.outerHTML;
+            //}
+            //newCell2.innerHTML = button.innerHTML;
+
+        } else {
+            history_zukei.innerHTML = mml_history.outerHTML.replace("<mrow class=\"integration-node highlight\">", "<mrow class=\"integration-node\">");
+            //history.innerHTML = mml_history.innerHTML;
+        }
+        table_count++;
+        var copy_buttons = document.body.getElementsByTagName('input');
+        var index = 0;
+        for (var i = 0; i < copy_buttons.length; i++) {
+            //console.log(copy_buttons[i]);
+            //var Answer = Answers[i];
+            index = 0;
+            copy_buttons[i].addEventListener("click", function() {
+                var history_table = document.getElementById("history_table");
+                index = $("[id=copy]").index(this);
+                //var value = $('.HistoryQueryView').eq(index).val();
+                //Answer_action(this);
+                var value = history_table.rows[index].cells[0];
+                console.log("copy");
+                console.log("index: " + index);
+                console.log(value);
+            }, false);
+
+        }
+        // var index = $('.copy').index(this);
+
+
+        //ここまで
+        resetNum = 0;
+        koushikiSearchFlag = 0;
+        while (resetNum_zukei < extractionNum_zukei) { //配列の値を全て初期化
+            extractionFlag_zukei[resetNum_zukei] = 0;
+            resetNum_zukei++;
+        }
+        console.log(mml);
         var queryString = createQueryString(mml);
         console.log(queryString);
         runMathFlagRegexp(queryString);
@@ -1044,6 +1101,7 @@ var runMathRegexp = function(queryString) {
      */
     // HTMLPrint.text('num', nOfMatched+' / '+nOfFormulae);
 };
+
 var runMathFlagRegexp = function(queryString) {
 
 
@@ -1205,9 +1263,9 @@ var runMathFlagRegexp = function(queryString) {
     for (var mathStr of distinctions) {
         outputStr_zukei = mathStr;
         //console.log(outputStr_zukei);
-        distinctionStr = expressionDistinctionHash(mathStr);
-        console.log(distinctionStr);
-        if (extractionFlag_zukei[0] == 1 && distinctionStr_zukei.indexOf('直線') != -1) {
+        distinctionStr_zukei = expressionDistinctionHash(mathStr);
+        console.log(distinctionStr_zukei);
+        /*if(extractionFlag_zukei[0] == 1 && distinctionStr_zukei.indexOf('直線') != -1) {
             outputStr_zukei = outputStr_zukei.replace("<math mathsize=\"250%\" xmlns=\"http://www.w3.org/1998/Math/MathML\"><mrow>", "<math mathsize=\"250%\" xmlns=\"http://www.w3.org/1998/Math/MathML\"><mrow><mstyle mathbackground=\"yellow\"><mrow>");
             outputStr_zukei = outputStr_zukei.replace("<\/mrow><\/math>", "<\/mrow><\/mstyle><\/mrow><\/math>");
         } else if (extractionFlag_zukei[1] == 1 && distinctionStr_zukei.indexOf('円形') != -1) {
@@ -1258,11 +1316,64 @@ var runMathFlagRegexp = function(queryString) {
         }else if(extractionFlag_zukei[16] == 1 && distinctionStr_zukei.indexOf('カージオイド') != -1){
             outputStr_zukei = outputStr_zukei.replace("<math mathsize=\"250%\" xmlns=\"http://www.w3.org/1998/Math/MathML\"><mrow>", "<math mathsize=\"250%\" xmlns=\"http://www.w3.org/1998/Math/MathML\"><mrow><mstyle mathbackground=\"yellow\"><mrow>");
             outputStr_zukei = outputStr_zukei.replace("<\/mrow><\/math>", "<\/mrow><\/mstyle><\/mrow><\/math>");
-        }
+        }*/
+            if(distinctionStr_zukei.indexOf('直線') != -1) {
+                outputStr_zukei = outputStr_zukei.replace("<math mathsize=\"250%\" xmlns=\"http://www.w3.org/1998/Math/MathML\"><mrow>", "<math mathsize=\"250%\" xmlns=\"http://www.w3.org/1998/Math/MathML\"><mrow><mstyle mathbackground=\"yellow\"><mrow>");
+                outputStr_zukei = outputStr_zukei.replace("<\/mrow><\/math>", "<\/mrow><\/mstyle><\/mrow><\/math>");
+            } else if (distinctionStr_zukei.indexOf('円形') != -1) {
+                outputStr_zukei = outputStr_zukei.replace("<math mathsize=\"250%\" xmlns=\"http://www.w3.org/1998/Math/MathML\"><mrow>", "<math mathsize=\"250%\" xmlns=\"http://www.w3.org/1998/Math/MathML\"><mrow><mstyle mathbackground=\"yellow\"><mrow>");
+                outputStr_zukei = outputStr_zukei.replace("<\/mrow><\/math>", "<\/mrow><\/mstyle><\/mrow><\/math>");
+            } else if (distinctionStr_zukei.indexOf('放物線') != -1) {
+                outputStr_zukei = outputStr_zukei.replace("<math mathsize=\"250%\" xmlns=\"http://www.w3.org/1998/Math/MathML\"><mrow>", "<math mathsize=\"250%\" xmlns=\"http://www.w3.org/1998/Math/MathML\"><mrow><mstyle mathbackground=\"yellow\"><mrow>");
+                outputStr_zukei = outputStr_zukei.replace("<\/mrow><\/math>", "<\/mrow><\/mstyle><\/mrow><\/math>");
+            } else if (distinctionStr_zukei.indexOf('対数関数') != -1) {
+                outputStr_zukei = outputStr_zukei.replace("<math mathsize=\"250%\" xmlns=\"http://www.w3.org/1998/Math/MathML\"><mrow>", "<math mathsize=\"250%\" xmlns=\"http://www.w3.org/1998/Math/MathML\"><mrow><mstyle mathbackground=\"yellow\"><mrow>");
+                outputStr_zukei = outputStr_zukei.replace("<\/mrow><\/math>", "<\/mrow><\/mstyle><\/mrow><\/math>");
+            } else if (distinctionStr_zukei.indexOf('指数関数') != -1) {
+                outputStr_zukei = outputStr_zukei.replace("<math mathsize=\"250%\" xmlns=\"http://www.w3.org/1998/Math/MathML\"><mrow>", "<math mathsize=\"250%\" xmlns=\"http://www.w3.org/1998/Math/MathML\"><mrow><mstyle mathbackground=\"yellow\"><mrow>");
+                outputStr_zukei = outputStr_zukei.replace("<\/mrow><\/math>", "<\/mrow><\/mstyle><\/mrow><\/math>");
+            } else if (distinctionStr_zukei.indexOf('楕円') != -1) {
+                outputStr_zukei = outputStr_zukei.replace("<math mathsize=\"250%\" xmlns=\"http://www.w3.org/1998/Math/MathML\"><mrow>", "<math mathsize=\"250%\" xmlns=\"http://www.w3.org/1998/Math/MathML\"><mrow><mstyle mathbackground=\"yellow\"><mrow>");
+                outputStr_zukei = outputStr_zukei.replace("<\/mrow><\/math>", "<\/mrow><\/mstyle><\/mrow><\/math>");
+            }else if(distinctionStr_zukei.indexOf('双曲線') != -1){
+                outputStr_zukei = outputStr_zukei.replace("<math mathsize=\"250%\" xmlns=\"http://www.w3.org/1998/Math/MathML\"><mrow>", "<math mathsize=\"250%\" xmlns=\"http://www.w3.org/1998/Math/MathML\"><mrow><mstyle mathbackground=\"yellow\"><mrow>");
+                outputStr_zukei = outputStr_zukei.replace("<\/mrow><\/math>", "<\/mrow><\/mstyle><\/mrow><\/math>");
+            }else if(distinctionStr_zukei.indexOf('分子関数') != -1){
+                outputStr_zukei = outputStr_zukei.replace("<math mathsize=\"250%\" xmlns=\"http://www.w3.org/1998/Math/MathML\"><mrow>", "<math mathsize=\"250%\" xmlns=\"http://www.w3.org/1998/Math/MathML\"><mrow><mstyle mathbackground=\"yellow\"><mrow>");
+                outputStr_zukei = outputStr_zukei.replace("<\/mrow><\/math>", "<\/mrow><\/mstyle><\/mrow><\/math>");
+            }else if(distinctionStr_zukei.indexOf('無理関数') != -1){
+                outputStr_zukei = outputStr_zukei.replace("<math mathsize=\"250%\" xmlns=\"http://www.w3.org/1998/Math/MathML\"><mrow>", "<math mathsize=\"250%\" xmlns=\"http://www.w3.org/1998/Math/MathML\"><mrow><mstyle mathbackground=\"yellow\"><mrow>");
+                outputStr_zukei = outputStr_zukei.replace("<\/mrow><\/math>", "<\/mrow><\/mstyle><\/mrow><\/math>");
+            }else if(distinctionStr_zukei.indexOf('連立1次関数') != -1){
+                outputStr_zukei = outputStr_zukei.replace("<math mathsize=\"250%\" xmlns=\"http://www.w3.org/1998/Math/MathML\"><mrow>", "<math mathsize=\"250%\" xmlns=\"http://www.w3.org/1998/Math/MathML\"><mrow><mstyle mathbackground=\"yellow\"><mrow>");
+                outputStr_zukei = outputStr_zukei.replace("<\/mrow><\/math>", "<\/mrow><\/mstyle><\/mrow><\/math>");
+            }else if(distinctionStr_zukei.indexOf('三角関数') != -1){
+                outputStr_zukei = outputStr_zukei.replace("<math mathsize=\"250%\" xmlns=\"http://www.w3.org/1998/Math/MathML\"><mrow>", "<math mathsize=\"250%\" xmlns=\"http://www.w3.org/1998/Math/MathML\"><mrow><mstyle mathbackground=\"yellow\"><mrow>");
+                outputStr_zukei = outputStr_zukei.replace("<\/mrow><\/math>", "<\/mrow><\/mstyle><\/mrow><\/math>");
+            }else if(distinctionStr_zukei.indexOf('リサージュ曲線') != -1){
+                outputStr_zukei = outputStr_zukei.replace("<math mathsize=\"250%\" xmlns=\"http://www.w3.org/1998/Math/MathML\"><mrow>", "<math mathsize=\"250%\" xmlns=\"http://www.w3.org/1998/Math/MathML\"><mrow><mstyle mathbackground=\"yellow\"><mrow>");
+                outputStr_zukei = outputStr_zukei.replace("<\/mrow><\/math>", "<\/mrow><\/mstyle><\/mrow><\/math>");
+            }else if(distinctionStr_zukei.indexOf('アステロイド曲線') != -1){
+                outputStr_zukei = outputStr_zukei.replace("<math mathsize=\"250%\" xmlns=\"http://www.w3.org/1998/Math/MathML\"><mrow>", "<math mathsize=\"250%\" xmlns=\"http://www.w3.org/1998/Math/MathML\"><mrow><mstyle mathbackground=\"yellow\"><mrow>");
+                outputStr_zukei = outputStr_zukei.replace("<\/mrow><\/math>", "<\/mrow><\/mstyle><\/mrow><\/math>");
+            }else if(distinctionStr_zukei.indexOf('サイクロイド') != -1){
+                outputStr_zukei = outputStr_zukei.replace("<math mathsize=\"250%\" xmlns=\"http://www.w3.org/1998/Math/MathML\"><mrow>", "<math mathsize=\"250%\" xmlns=\"http://www.w3.org/1998/Math/MathML\"><mrow><mstyle mathbackground=\"yellow\"><mrow>");
+                outputStr_zukei = outputStr_zukei.replace("<\/mrow><\/math>", "<\/mrow><\/mstyle><\/mrow><\/math>");
+            }else if(distinctionStr_zukei.indexOf('アルキメデスの渦巻線') != -1){
+                outputStr_zukei = outputStr_zukei.replace("<math mathsize=\"250%\" xmlns=\"http://www.w3.org/1998/Math/MathML\"><mrow>", "<math mathsize=\"250%\" xmlns=\"http://www.w3.org/1998/Math/MathML\"><mrow><mstyle mathbackground=\"yellow\"><mrow>");
+                outputStr_zukei = outputStr_zukei.replace("<\/mrow><\/math>", "<\/mrow><\/mstyle><\/mrow><\/math>");
+            }else if(distinctionStr_zukei.indexOf('正葉曲線') != -1){
+                outputStr_zukei = outputStr_zukei.replace("<math mathsize=\"250%\" xmlns=\"http://www.w3.org/1998/Math/MathML\"><mrow>", "<math mathsize=\"250%\" xmlns=\"http://www.w3.org/1998/Math/MathML\"><mrow><mstyle mathbackground=\"yellow\"><mrow>");
+                outputStr_zukei = outputStr_zukei.replace("<\/mrow><\/math>", "<\/mrow><\/mstyle><\/mrow><\/math>");
+            }else if(distinctionStr_zukei.indexOf('カージオイド') != -1){
+                outputStr_zukei = outputStr_zukei.replace("<math mathsize=\"250%\" xmlns=\"http://www.w3.org/1998/Math/MathML\"><mrow>", "<math mathsize=\"250%\" xmlns=\"http://www.w3.org/1998/Math/MathML\"><mrow><mstyle mathbackground=\"yellow\"><mrow>");
+                outputStr_zukei = outputStr_zukei.replace("<\/mrow><\/math>", "<\/mrow><\/mstyle><\/mrow><\/math>");
+            }
+        
         nwin.document.writeln(outputStr_zukei);
         nwin.document.write("<br/>");
         distinctionStr_zukei = expressionDistinctionHash(mathStr);
-        nwin.document.writeln(distinctionStr);
+        nwin.document.writeln(distinctionStr_zukei);
         nwin.document.write("<br/>");
         nwin.document.write("<br/>");
     }
