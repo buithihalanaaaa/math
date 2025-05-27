@@ -6,9 +6,14 @@
 // check用の文字列に括弧や縦棒"|"を使いたい場合は <mi>\\(<\mi> のように、2回エスケープする必要がある
 
 var expressionDistinction = function(n) {
-  target = document.getElementById("output");
   var text;
   var str = n;
+
+  // 属性・空白・改行の除去
+  str = str.replace(/<math[^>]*?>/g, "<math>");
+  str = str.replace(/<mrow[^>]*?>/g, "<mrow>");
+  str = str.replace(/\s+/g, "");
+
   var integralCheck = new RegExp("<mi>∫<\/mi>|<mi>∬<\/mi>|<mi>∭<\/mi>");
   var rootCheck = new RegExp("<msqrt>|<mroot>");
 
@@ -550,3 +555,5 @@ var expressionDistinction = function(n) {
   text = "抽出した学習項目：" + bibunCheckStr_a + vectorSizeCheckStr + vectorCheckStr + logicalAndCheckStr + logicalOrCheckStr + argCheckStr + outputStr;
   return text;
 }
+
+module.exports = { expressionDistinction };
