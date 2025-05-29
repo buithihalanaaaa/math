@@ -21,7 +21,10 @@ var specialCharacters= [   //特別な意味を持つトークン．
     '*', '+', '?', '.', '|', '\\',
     '&', ';'
 ];
-
+module.exports = {
+  alias,
+  specialCharacters
+};
 
 var cer =
 {
