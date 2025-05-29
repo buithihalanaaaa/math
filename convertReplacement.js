@@ -155,5 +155,6 @@ var parseReplacement = function(replacementString, idx)
     }
     return parsedReplacement;//ここに行き着いたら，再帰コールではないので，stringだけ返す．
 };
+module.exports = { tokenizeParsedString, parseReplacement };
 
 
