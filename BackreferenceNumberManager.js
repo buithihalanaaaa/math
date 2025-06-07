@@ -15,12 +15,17 @@ var BackreferenceNumberManager = function()
 		return n;
 	};
 
-	self.free = function(n)
-	{
-		if(used.indexOf(n) === -1) throw new Error('free BackreferenceNumber');
-		used.splice(n, 1);
-		return;
-	};
+        self.free = function(n)
+        {
+                var idx = used.indexOf(n);
+                if(idx === -1) throw new Error('free BackreferenceNumber');
+                used.splice(idx, 1);
+                return;
+        };
 
-	return self;
+        return self;
 };
+
+if (typeof module !== 'undefined') {
+        module.exports = BackreferenceNumberManager;
+}
