@@ -5,6 +5,15 @@
  *      返り値が複数の要素になるような場合は，mrowで束ねられて返る．
  *      空のmrowを渡したら，そのmrowは木から取り除かれて，nullが返る．
  */
+/*
+ * pmmlの木を正規化．
+ * arg: math要素，あるいは，pmmlの要素．
+ * ret: math要素，あるいは，pmmlの要素．引数に親がある場合は，もとの親とつながれている状態で返る．
+ *      返り値が複数の要素になるような場合は，mrowで束ねられて返る．
+ *      空のmrowを渡したら，そのmrowは木から取り除かれて，nullが返る．
+ */
+const { alias } = require("./constants");
+
 var normalizePmmlTree = function(argElement)
 {
   
@@ -53,7 +62,13 @@ var normalizePmmlTree = function(argElement)
   }
 
   //引数が親につながれていた場合は，親につなぎなおす．
-  parent.insertBefore(returnElement, nextSibling);
+  if (
+    parent &&
+    returnElement &&
+    typeof returnElement.nodeType === "number"
+  ) {
+    parent.insertBefore(returnElement, nextSibling);
+  }
 
   return returnElement;
 };
@@ -195,7 +210,7 @@ var normalize = function(n){
       var firstChild = n.firstChild;
       n.parentNode.insertBefore(firstChild, n);//最初の子を引きずりだす．引きずりだしてから処理しないと，mrowがうまく消されない．
       var newOrg1stChild = normalizePmmlTree(firstChild);//最初の子を処理．
-      if(newOrg1stChild.localName==='mrow')//根がmrowである場合は除去．この時点でfirstchildは消えてる可能性があるから，またnから辿る．
+      if(newOrg1stChild && newOrg1stChild.localName==='mrow') // nullチェックを追加
       {
         newOrg1stChild.parentNode.removeChildOnly(newOrg1stChild);
       }
@@ -238,7 +253,7 @@ var normalize = function(n){
       var firstChild = n.firstChild;
       n.parentNode.insertBefore(firstChild, n);//最初の子を引きずりだす．引きずりだしてから処理しないと，mrowがうまく消されない．
       var newOrg1stChild = normalizePmmlTree(firstChild);//最初の子を処理．
-      if(newOrg1stChild.localName==='mrow')//根がmrowである場合は除去．この時点でfirstchildは消えてる可能性があるから，またnから辿る．
+      if(newOrg1stChild && newOrg1stChild.localName==='mrow') // nullチェックを追加
       {
         newOrg1stChild.parentNode.removeChildOnly(newOrg1stChild);
       }
@@ -466,8 +481,7 @@ var normalizeMfenced = function(n)
   return moOpen;
 };
 
-
-
+module.exports = { normalizePmmlTree};
 
 
 

@@ -2,6 +2,11 @@
 /*
  *
  */
+const { alias, specialCharacters } = require('./constants');
+
+/*
+ *
+ */
 var queryParse = function()//即時実行される
 {
   /* ****
@@ -723,3 +728,5 @@ var queryParse = function()//即時実行される
   return main;
 
 }();
+
+module.exports = { queryParse };

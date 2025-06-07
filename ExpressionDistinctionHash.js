@@ -44,10 +44,23 @@ var expressionDistinctionHash = function(n) {
       },
     },
     //三次関数
-    simultaneousFunction:{
-      simultaneousFunctionstd:{
-        pattern: "<mtable>\\s*<mtr>\\s*<mtd>\\s*<mi>[a-zA-Z]|\\d+(\\.\\d+)?<\\/mi>\\s*<mi>x<\\/mi>\\s*<mo>+<\\/mo>\\s*<mi>[a-zA-Z]|\\d+(\\.\\d+)?<\\/mi>\\s*<mi>y<\\/mi>\\s*<mo>=<\\/mo>\\s*<mi>[a-zA-Z]|\\d+(\\.\\d+)?<\\/mi>\\s*<\\/mtd>\\s*<mtd>\\s*<mi>[a-zA-Z]|\\d+(\\.\\d+)?<\\/mi>\\s*<mi>x<\\/mi>\\s*<mo>+<\\/mo>\\s*<mi>[a-zA-Z]|\\d+(\\.\\d+)?<\\/mi>\\s*<mi>y<\\/mi>\\s*<mo>=<\\/mo>\\s*<mi>[a-zA-Z]|\\d+(\\.\\d+)?<\\/mi>\\s*<\\/mtd>\\s*<\\/mtr>\\s*<\\/mtable>",
-        description: "連立1次関数"
+    cubicFunction:{
+      standardForm: {
+        pattern: "<mrow>\\s*" +
+        "<mi>\\s*([a-zA-Z]|\\d+(\\.\\d+)?)\\s*</mi>\\s*" +                         // a
+        "<msup>\\s*<mi>x</mi>\\s*<mn>3</mn>\\s*</msup>\\s*" +
+        "<mo>\\s*[+\\-]\\s*</mo>\\s*" +                                           // +
+        "<mi>\\s*([a-zA-Z]|\\d+(\\.\\d+)?)\\s*</mi>\\s*" +                         // b
+        "<msup>\\s*<mi>x</mi>\\s*<mn>2</mn>\\s*</msup>\\s*" +
+        "<mo>\\s*[+\\-]\\s*</mo>\\s*" +                                           // +
+        "<mi>\\s*([a-zA-Z]|\\d+(\\.\\d+)?)\\s*</mi>\\s*" +                         // c
+        "<mi>x</mi>\\s*" +
+        "<mo>\\s*[+\\-]\\s*</mo>\\s*" +                                           // +
+        "<mi>\\s*([a-zA-Z]|\\d+(\\.\\d+)?)\\s*</mi>\\s*" +                         // d
+        "<mo>\\s*=\\s*</mo>\\s*" +
+        "<mn>0</mn>\\s*" +
+        "</mrow>",
+        description: "三次関数の標準形式: ax³ + bx² + cx + d = 0"
       }
     },
     //放物線
@@ -73,7 +86,7 @@ var expressionDistinctionHash = function(n) {
         description: "頂点形式: y = ax²の放物線"
       },
     },
-        //対数方程式
+//対数方程式
     logarithmicEquations:{
       //自然対数関数
       naturalLogarithm:{

@@ -85,5 +85,4 @@ var queryTokenize = function(query)
   }
   return tokens;
 };
-
-
+module.exports = { queryTokenize };
