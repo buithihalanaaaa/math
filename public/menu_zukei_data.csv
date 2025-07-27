@@ -1,0 +1,68 @@
+0,カテゴリ名に当てる変数名,カテゴリ名,検索対象
+1,chokusen,直線,直線一般形
+1,chokusen,直線,直線の傾き切片形式
+1,chokusen,直線,直線の傾き切逆型
+1,chokusen,直線,直線のy傾き切型
+1,chokusen,直線,直線のx傾き切型
+2,taLogakansu,対数関数,自然対数関数
+2,taLogakansu,対数関数,常用対数関数
+2,taLogakansu,対数関数,減少対数関数
+2,taLogakansu,対数関数,増加対数関数
+3,enkei,円形,円形の標準形式
+3,enkei,円形,円形の一般形式
+3,enkei,円形,円形の中心形式
+4,houbutsusen,放物線,放物線の標準型:y = (x ± a)(x ± b)
+4,houbutsusen,放物線,放物線の頂点形式y = ax² + q
+4,houbutsusen,放物線,放物線の切片形式y = a(x ± p)²
+4,houbutsusen,放物線,放物線の切片形式y = a(x ± p)² + q
+4,houbutsusen,放物線,放物線の標準式y² = ax
+4,houbutsusen,放物線,放物線の標準式y = ax² + bx + c
+4,houbutsusen,放物線,放物線の標準式ay = x²
+4,houbutsusen,放物線,放物線の頂点形式y = ax²
+5,sanjikansu,三次関数,三次関数
+6,taisukansu,対数関数,自然指数関数
+6,taisukansu,増加指数関数,増加指数関数
+6,taisukansu,減少指数関数,減少指数関数
+7,daen,楕円,楕円
+8,hyperbola,双曲線,x軸方向双曲線
+8,hyperbola,双曲線,y軸方向双曲線
+8,hyperbola,双曲線,双曲線の標準形式
+9,bunshikansu,分子関数,分子関数 y= k/x
+9,bunshikansu,分子関数,分子関数 y= k/(x-p)
+9,bunshikansu,分子関数,分子関数 y= k/(x-p) + q
+9,bunshikansu,分子関数,分子関数 (ax+b)/(cx+d)
+10,murikansu,無理関数,無理関数の平方根関数 y = √ax
+10,murikansu,無理関数,無理関数の平方根関数 y = √(ax + b)
+10,murikansu,無理関数,立方根関数 y = ∛ax
+10,murikansu,無理関数,乗根関数 y = -√ax
+11,renritsuitijikansu,連立1次関数,連立1次関数
+12,sankakukansu,三角関数,正弦の三角関数
+12,sankakukansu,三角関数,正弦の三角関数の逆関数
+12,sankakukansu,三角関数,余弦の三角関数
+12,sankakukansu,三角関数,余弦の三角関数の逆関数
+12,sankakukansu,三角関数,正接の三角関数
+12,sankakukansu,三角関数,正接の三角関数の逆関数
+12,sankakukansu,三角関数,余接の三角関数
+12,sankakukansu,三角関数,余接の三角関数の逆関数
+12,sankakukansu,三角関数,正割の三角関数
+12,sankakukansu,三角関数,正割の三角関数の逆関数
+12,sankakukansu,三角関数,余割の三角関数
+12,sankakukansu,三角関数,余割の三角関数の逆関数
+12,sankakukansu,三角関数,双曲線正弦の三角関数
+12,sankakukansu,三角関数,双曲線余弦の三角関数
+12,sankakukansu,三角関数,双曲線正接の三角関数
+12,sankakukansu,三角関数,双曲線余接の三角関数
+12,sankakukansu,三角関数,双曲線正割の三角関数
+12,sankakukansu,三角関数,双曲線余割の三角関数
+12,sankakukansu,三角関数,双曲線正接の三角関数の逆関数
+12,sankakukansu,三角関数,双曲線余接の三角関数の逆関数
+12,sankakukansu,三角関数,双曲線正割の三角関数の逆関数
+12,sankakukansu,三角関数,双曲線余割の三角関数の逆関数
+12,sankakukansu,三角関数,双曲線正弦の三角関数の逆関数
+12,sankakukansu,三角関数,双曲線余弦の三角関数の逆関数
+13,risajyu,リサージュ曲線,リサージュ曲線
+14,asuteroido,アステロイド曲線,アステロイド曲線
+15,saikuroido,サイクロイド,サイクロイド
+16,arukimedesu,アルキメデスの渦巻線,アルキメデスの渦巻線
+17,seibakyokusen,正葉曲線,正葉曲線
+18,kajioido,カージオイド,カージオイド

@@ -1,0 +1,1226 @@
+<!DOCTYPE html>
+<html lang="en">
+<!-- //// //// //// //// -->
+
+<head>
+    <title>mregui</title>
+    <!-- charset must remain utf-8 to be handled properly by Processing -->
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <!--CSS-->
+    <link rel="stylesheet" type="text/css" href="./keyframes.css" media="all" />
+    <link rel="stylesheet" type="text/css" href="./body_main.css" media="all" />
+    <!--jQuery-->
+    <!--   <link   rel="stylesheet" href="./jquery/jquery-ui-1.9.2.custom/css/smoothness/jquery-ui-1.9.2.custom.css"
+          type="text/css" media="screen"/> -->
+    <!--   <link rel="stylesheet" type="text/css" href="./css/adjustJquery.css" media="all"/>-->
+    <!--自分で作ったアジャスト用-->
+    <script type="text/javascript" src="./jquery/jquery-ui-1.11.4.custom/external/jquery/jquery.js"></script>
+    <script type="text/javascript" src="./jquery/jquery-ui-1.11.4.custom/jquery-ui.min.js"></script>
+    <script type="text/javascript" src="./jquery/plugin/jquery.xmldom.min.js"></script>
+    <script type="text/javascript" src="./jquery/plugin/jquery.csv.min.js"></script>
+    <!--MathJax-->
+    <!--
+  <script type="text/javascript"
+          src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML" >
+  </script>
+  -->
+    <!--JavaScript-->
+    <script type="text/javascript" src="./prototypeMethods.js"></script>
+    <script type="text/javascript" src="./protopyPlus.js"></script>
+    <script type="text/javascript" src="./constants.js"></script>
+    <script type="text/javascript" src="./normalize.js"></script>
+    <script type="text/javascript" src="./queryTokenize.js"></script>
+    <script type="text/javascript" src="./queryParse.js"></script>
+    <script type="text/javascript" src="./createMathTreeString.js"></script>
+    <script type="text/javascript" src="./convertReplacement.js"></script>
+    <script type="text/javascript" src="./invertMathTree.js"></script>
+    <script type="text/javascript" src="./createQueryString.js"></script>
+    <script type="text/javascript" src="./BackreferenceNumberManager.js"></script>
+    <script type="text/javascript" src="./CaretManager.js"></script>
+    <script type="text/javascript" src="./TokenManager.js"></script>
+    <script type="text/javascript" src="./chekzukei.js"></script>
+    <!-- JavaScript 検索用メニューバーのjsも追加予定 -->
+    <script type="text/javascript" src="./searchMenuChange.js"></script>
+    <script type="text/javascript" src="./searchMenuChangeZukei.js"></script>
+    <script type="text/javascript" src="./bookmarkletSubWindow.js"></script>
+    <script type="text/javascript" src="./ExpressionDistinction.js"></script>
+    <script type="text/javascript" src="./ExpressionDistinction_fromQuery.js"></script>
+    <script type="text/javascript" src="./ExpressionDistinctionHash.js"></script>
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <!-- <script type="text/javascript" src="./ExpressionDistinction_fromQuery.js" ></script> -->
+</head>
+
+<body>
+    <div class="button-panels">
+        <div class="character-button-table">
+            <form action="#">
+                <select name="character-button-category-select-menu" id="character-button-category-select-menu">
+                    <option value="operators">operators</option>
+                    <option value="greeks">Greek alphabet</option>
+                </select>
+            </form>
+            <div class="character-button-table-operators">
+                <table>
+                    <tr>
+                        <td colspan="6">Arithmetic</td>
+                    </tr>
+                    <tr>
+                        <td><math>
+                                <mi>+</mi>
+                            </math></td>
+                        <td><math>
+                                <mi>-</mi>
+                            </math></td>
+                        <td><math>
+                                <mi>÷</mi>
+                            </math></td>
+                        <td><math>
+                                <mi>×</mi>
+                            </math></td>
+                        <td><math>
+                                <mi>±</mi>
+                            </math></td>
+                        <td><math>
+                                <mi>∓</mi>
+                            </math></td>
+                    </tr>
+                    <tr>
+                        <td><math>
+                                <mi>/</mi>
+                            </math></td>
+                        <td><math>
+                                <mi>⋅</mi>
+                            </math></td>
+                        <td><math>
+                                <mi>∑</mi>
+                            </math></td>
+                        <td><math>
+                                <mi>∏</mi>
+                            </math></td>
+                        <td><math>
+                                <mi>=</mi>
+                            </math></td>
+                        <td><math>
+                                <mi>≠</mi>
+                            </math></td>
+                    </tr>
+                    <tr>
+                        <td><math>
+                                <mi>&lt;</mi>
+                            </math></td> <!-- 小なり「＜」 -->
+                        <td><math>
+                                <mi>&gt;</mi>
+                            </math></td> <!-- 大なり「＞」 -->
+                        <td><math>
+                                <mi>≤</mi>
+                            </math></td>
+                        <td><math>
+                                <mi>≥</mi>
+                            </math></td>
+                        <td><math>
+                                <mi>≪</mi>
+                            </math></td>
+                        <td><math>
+                                <mi>≫</mi>
+                            </math></td>
+                    </tr>
+                    <tr>
+                        <td><math>
+                                <mi>&#x2032;</mi>
+                            </math></td><!-- 微分記号に使う「ダッシュ」 (shift+7とは違う文字になる) -->
+                        <td><math>
+                                <mi>→</mi>
+                            </math></td>
+                        <td><math>
+                                <mi>&infin;</mi>
+                            </math></td> <!-- limやシグマに使う「無限大」 -->
+                        <td><math>
+                                <mi>❘</mi>
+                            </math></td> <!-- 絶対値や行列の大きさに使う「縦棒」 (shift+¥とは違う文字になる) -->
+                        <td><math>
+                                <mi>°</mi>
+                            </math></td>
+                    </tr>
+                    <tr>
+                        <td colspan="6">Set</td>
+                    </tr>
+                    <tr>
+                        <td><math>
+                                <mi>∪</mi>
+                            </math></td>
+                        <td><math>
+                                <mi>∩</mi>
+                            </math></td>
+                        <td><math>
+                                <mi>∈</mi>
+                            </math></td>
+                        <td><math>
+                                <mi>∋</mi>
+                            </math></td>
+                        <td><math>
+                                <mi>∉</mi>
+                            </math></td>
+                        <td><math>
+                                <mi>∌</mi>
+                            </math></td>
+                    </tr>
+                    <tr>
+                        <td><math>
+                                <mi>⊂</mi>
+                            </math></td>
+                        <td><math>
+                                <mi>⊃</mi>
+                            </math></td>
+                        <td><math>
+                                <mi>⊆</mi>
+                            </math></td>
+                        <td><math>
+                                <mi>⊇</mi>
+                            </math></td>
+                    </tr>
+                    <tr>
+                        <td colspan="6">Logic</td>
+                    </tr>
+                    <tr>
+                        <td><math>
+                                <mi>∨</mi>
+                            </math></td>
+                        <td><math>
+                                <mi>∧</mi>
+                            </math></td>
+                        <td><math>
+                                <mi>￢</mi>
+                            </math></td>
+                        <td><math>
+                                <mi>⇒</mi>
+                            </math></td>
+                        <td><math>
+                                <mi>∀</mi>
+                            </math></td>
+                        <td><math>
+                                <mi>∃</mi>
+                            </math></td>
+                    </tr>
+                    <tr>
+                        <td colspan="6">Calculus</td>
+                    </tr>
+                    <tr>
+                        <td><math>
+                                <mi>∫</mi>
+                            </math></td>
+                        <td><math>
+                                <mi>∬</mi>
+                            </math></td>
+                        <td><math>
+                                <mi>∭</mi>
+                            </math></td>
+                        <td><math>
+                                <mi>∮</mi>
+                            </math></td>
+                        <td><math>
+                                <mi>∯</mi>
+                            </math></td>
+                        <td><math>
+                                <mi>∰</mi>
+                            </math></td>
+                    </tr>
+                    <tr>
+                        <td><math>
+                                <mi>∂</mi>
+                            </math></td>
+                    </tr>
+                </table>
+            </div>
+            <div class="character-button-table-greeks" style="display: none">
+                <table>
+                    <tr>
+                        <td colspan="6">Lowercase</td>
+                    </tr>
+                    <tr>
+                        <td><math>
+                                <mi>α</mi>
+                            </math></td>
+                        <td><math>
+                                <mi>β</mi>
+                            </math></td>
+                        <td><math>
+                                <mi>γ</mi>
+                            </math></td>
+                        <td><math>
+                                <mi>δ</mi>
+                            </math></td>
+                        <td><math>
+                                <mi>ε</mi>
+                            </math></td>
+                        <td><math>
+                                <mi>ζ</mi>
+                            </math></td>
+                    </tr>
+                    <tr>
+                        <td><math>
+                                <mi>η</mi>
+                            </math></td>
+                        <td><math>
+                                <mi>θ</mi>
+                            </math></td>
+                        <td><math>
+                                <mi>ι</mi>
+                            </math></td>
+                        <td><math>
+                                <mi>κ</mi>
+                            </math></td>
+                        <td><math>
+                                <mi>λ</mi>
+                            </math></td>
+                        <td><math>
+                                <mi>μ</mi>
+                            </math></td>
+                    </tr>
+                    <tr>
+                        <td><math>
+                                <mi>ν</mi>
+                            </math></td>
+                        <td><math>
+                                <mi>ξ</mi>
+                            </math></td>
+                        <td><math>
+                                <mi>ο</mi>
+                            </math></td>
+                        <td><math>
+                                <mi>π</mi>
+                            </math></td>
+                        <td><math>
+                                <mi>ρ</mi>
+                            </math></td>
+                        <td><math>
+                                <mi>ς</mi>
+                            </math></td>
+                    </tr>
+                    <tr>
+                        <td><math>
+                                <mi>σ</mi>
+                            </math></td>
+                        <td><math>
+                                <mi>τ</mi>
+                            </math></td>
+                        <td><math>
+                                <mi>υ</mi>
+                            </math></td>
+                        <td><math>
+                                <mi>φ</mi>
+                            </math></td>
+                        <td><math>
+                                <mi>χ</mi>
+                            </math></td>
+                        <td><math>
+                                <mi>ψ</mi>
+                            </math></td>
+                    </tr>
+                    <tr>
+                        <td><math>
+                                <mi>ω</mi>
+                            </math></td>
+                    </tr>
+                    <tr>
+                        <td colspan="6">Uppercase</td>
+                    </tr>
+                    <tr>
+                        <td><math>
+                                <mi>Α</mi>
+                            </math></td>
+                        <td><math>
+                                <mi>Β</mi>
+                            </math></td>
+                        <td><math>
+                                <mi>Γ</mi>
+                            </math></td>
+                        <td><math>
+                                <mi>Δ</mi>
+                            </math></td>
+                        <td><math>
+                                <mi>Ε</mi>
+                            </math></td>
+                        <td><math>
+                                <mi>Ζ</mi>
+                            </math></td>
+                    </tr>
+                    <tr>
+                        <td><math>
+                                <mi>Η</mi>
+                            </math></td>
+                        <td><math>
+                                <mi>Θ</mi>
+                            </math></td>
+                        <td><math>
+                                <mi>Ι</mi>
+                            </math></td>
+                        <td><math>
+                                <mi>Κ</mi>
+                            </math></td>
+                        <td><math>
+                                <mi>Λ</mi>
+                            </math></td>
+                        <td><math>
+                                <mi>Μ</mi>
+                            </math></td>
+                    </tr>
+                    <tr>
+                        <td><math>
+                                <mi>Ν</mi>
+                            </math></td>
+                        <td><math>
+                                <mi>Ξ</mi>
+                            </math></td>
+                        <td><math>
+                                <mi>Ο</mi>
+                            </math></td>
+                        <td><math>
+                                <mi>Π</mi>
+                            </math></td>
+                        <td><math>
+                                <mi>Ρ</mi>
+                            </math></td>
+                        <td><math>
+                                <mi>Σ</mi>
+                            </math></td>
+                    </tr>
+                    <tr>
+                        <td><math>
+                                <mi>Τ</mi>
+                            </math></td>
+                        <td><math>
+                                <mi>Υ</mi>
+                            </math></td>
+                        <td><math>
+                                <mi>Φ</mi>
+                            </math></td>
+                        <td><math>
+                                <mi>Χ</mi>
+                            </math></td>
+                        <td><math>
+                                <mi>Ψ</mi>
+                            </math></td>
+                        <td><math>
+                                <mi>Ω</mi>
+                            </math></td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+        <div class="structure-button-table">
+            <div>
+                <table>
+                    <caption>数式の構造</caption>
+                    <tr>
+                        <td class='input-structure input-mfrac' title='分数(Alt+4)'><math mathsize="140%">
+                                <mfrac>
+                                    <mrow>
+                                        <mstyle class="null-rect">
+                                            <mphantom>
+                                                <mspace height="1.8ex" width="1.2ex" />
+                                            </mphantom>
+                                        </mstyle>
+                                    </mrow>
+                                    <mrow>
+                                        <mstyle class="null-rect">
+                                            <mphantom>
+                                                <mspace height="1.8ex" width="1.2ex" />
+                                            </mphantom>
+                                        </mstyle>
+                                    </mrow>
+                                </mfrac>
+                            </math></td>
+                        <td class='input-structure input-msqrt' title='二乗根(Alt+5)'><math mathsize="140%">
+                                <msqrt>
+                                    <mrow>
+                                        <mstyle class="null-rect">
+                                            <mphantom>
+                                                <mspace height="1.8ex" width="1.2ex" />
+                                            </mphantom>
+                                        </mstyle>
+                                    </mrow>
+                                </msqrt>
+                            </math></td>
+                        <td class='input-structure input-mroot' title='n乗根(Alt+6)'><math mathsize="140%">
+                                <mroot>
+                                    <mrow>
+                                        <mstyle class="null-rect">
+                                            <mphantom>
+                                                <mspace height="1.8ex" width="1.2ex" />
+                                            </mphantom>
+                                        </mstyle>
+                                    </mrow>
+                                    <mrow>
+                                        <mstyle class="null-rect">
+                                            <mphantom>
+                                                <mspace height="1.8ex" width="1.2ex" />
+                                            </mphantom>
+                                        </mstyle>
+                                    </mrow>
+                                </mroot>
+                            </math></td>
+                    </tr>
+                    <td class='input-structure input-msub' title='下付き文字(Alt+r)'><math mathsize="140%">
+                            <msub>
+                                <mi>x</mi>
+                                <mrow>
+                                    <mstyle class="null-rect">
+                                        <mphantom>
+                                            <mspace height="1.8ex" width="1.2ex" />
+                                        </mphantom>
+                                    </mstyle>
+                                </mrow>
+                            </msub>
+                        </math></td>
+                    <td class='input-structure input-msup' title='上付き文字(Alt+t)'><math mathsize="140%">
+                            <msup>
+                                <mi>x</mi>
+                                <mrow>
+                                    <mstyle class="null-rect">
+                                        <mphantom>
+                                            <mspace height="1.8ex" width="1.2ex" />
+                                        </mphantom>
+                                    </mstyle>
+                                </mrow>
+                            </msup>
+                        </math></td>
+                    <td class='input-structure input-msubsup' title='下付き文字-上付き文字(Alt+y)'><math mathsize="140%">
+                            <msubsup>
+                                <mi>x</mi>
+                                <mrow>
+                                    <mstyle class="null-rect">
+                                        <mphantom>
+                                            <mspace height="1.8ex" width="1.2ex" />
+                                        </mphantom>
+                                    </mstyle>
+                                </mrow>
+                                <mrow>
+                                    <mstyle class="null-rect">
+                                        <mphantom>
+                                            <mspace height="1.8ex" width="1.2ex" />
+                                        </mphantom>
+                                    </mstyle>
+                                </mrow>
+                            </msubsup>
+                        </math></td>
+                    </tr>
+                    <tr>
+                        <td class='input-structure input-munder' title='下文字(Alt+f)'><math mathsize="140%">
+                                <munder>
+                                    <mrow>
+                                        <mstyle class="null-rect">
+                                            <mphantom>
+                                                <mspace height="1.8ex" width="1.2ex" />
+                                            </mphantom>
+                                        </mstyle>
+                                    </mrow>
+                                    <mrow>
+                                        <mstyle class="null-rect">
+                                            <mphantom>
+                                                <mspace height="1.8ex" width="1.2ex" />
+                                            </mphantom>
+                                        </mstyle>
+                                    </mrow>
+                                </munder>
+                            </math></td>
+                        <td class='input-structure input-mover' title='上文字(Alt+g)'><math mathsize="140%">
+                                <mover>
+                                    <mrow>
+                                        <mstyle class="null-rect">
+                                            <mphantom>
+                                                <mspace height="1.8ex" width="1.2ex" />
+                                            </mphantom>
+                                        </mstyle>
+                                    </mrow>
+                                    <mrow>
+                                        <mstyle class="null-rect">
+                                            <mphantom>
+                                                <mspace height="1.8ex" width="1.2ex" />
+                                            </mphantom>
+                                        </mstyle>
+                                    </mrow>
+                                </mover>
+                            </math></td>
+                        <td class='input-structure input-munderover' title='上下文字(Alt+h)'><math mathsize="140%">
+                                <munderover>
+                                    <mrow>
+                                        <mstyle class="null-rect">
+                                            <mphantom>
+                                                <mspace height="1.8ex" width="1.2ex" />
+                                            </mphantom>
+                                        </mstyle>
+                                    </mrow>
+                                    <mrow>
+                                        <mstyle class="null-rect">
+                                            <mphantom>
+                                                <mspace height="1.8ex" width="1.2ex" />
+                                            </mphantom>
+                                        </mstyle>
+                                    </mrow>
+                                    <mrow>
+                                        <mstyle class="null-rect">
+                                            <mphantom>
+                                                <mspace height="1.8ex" width="1.2ex" />
+                                            </mphantom>
+                                        </mstyle>
+                                    </mrow>
+                                </munderover>
+                            </math></td>
+                    </tr>
+                    <tr>
+                        <td class='input-structure input-mtable' title='a行b列の行列を入力'><math mathsize="140%">
+                                <mtable columnspacing="0.5" rowspacing="0.1">
+                                    <mtr>
+                                        <mtd>
+                                            <mrow>
+                                                <mstyle class="null-rect">
+                                                    <mphantom>
+                                                        <mspace height="1.8ex" width="1.2ex" />
+                                                    </mphantom>
+                                                </mstyle>
+                                            </mrow>
+                                        </mtd>
+                                        <mtd>
+                                            <mrow>
+                                                <mstyle class="null-rect">
+                                                    <mphantom>
+                                                        <mspace height="1.8ex" width="1.2ex" />
+                                                    </mphantom>
+                                                </mstyle>
+                                            </mrow>
+                                        </mtd>
+                                    </mtr>
+                                    <mtr>
+                                        <mtd>
+                                            <mrow>
+                                                <mstyle class="null-rect">
+                                                    <mphantom>
+                                                        <mspace height="1.8ex" width="1.2ex" />
+                                                    </mphantom>
+                                                </mstyle>
+                                            </mrow>
+                                        </mtd>
+                                        <mtd>
+                                            <mrow>
+                                                <mstyle class="null-rect">
+                                                    <mphantom>
+                                                        <mspace height="1.8ex" width="1.2ex" />
+                                                    </mphantom>
+                                                </mstyle>
+                                            </mrow>
+                                        </mtd>
+                                    </mtr>
+                                </mtable>
+                            </math></td>
+                        <td colspan="2" title='row(行) column(列)'>
+                            <form name="fm">row:<input type="text" name="rows" id="rows_id" size="3" maxlength="2" value="2"><br>column:<input type="text" name="columns" id="columns_id" size="3" maxlength="2" value="2"></form>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class='input-structure input-mtable22' title='2行2列の行列を入力'><math mathsize="140%">
+                                <mtable columnspacing="0.5" rowspacing="0.1">
+                                    <mtr>
+                                        <mtd>
+                                            <mrow>
+                                                <mstyle class="null-rect">
+                                                    <mphantom>
+                                                        <mspace height="1.8ex" width="1.2ex" />
+                                                    </mphantom>
+                                                </mstyle>
+                                            </mrow>
+                                        </mtd>
+                                        <mtd>
+                                            <mrow>
+                                                <mstyle class="null-rect">
+                                                    <mphantom>
+                                                        <mspace height="1.8ex" width="1.2ex" />
+                                                    </mphantom>
+                                                </mstyle>
+                                            </mrow>
+                                        </mtd>
+                                    </mtr>
+                                    <mtr>
+                                        <mtd>
+                                            <mrow>
+                                                <mstyle class="null-rect">
+                                                    <mphantom>
+                                                        <mspace height="1.8ex" width="1.2ex" />
+                                                    </mphantom>
+                                                </mstyle>
+                                            </mrow>
+                                        </mtd>
+                                        <mtd>
+                                            <mrow>
+                                                <mstyle class="null-rect">
+                                                    <mphantom>
+                                                        <mspace height="1.8ex" width="1.2ex" />
+                                                    </mphantom>
+                                                </mstyle>
+                                            </mrow>
+                                        </mtd>
+                                    </mtr>
+                                </mtable>
+                            </math></td>
+                        <td class='input-structure input-mtable33' title='3行3列の行列を入力'><math mathsize="100%">
+                                <mtable columnspacing="0.5" rowspacing="0.1">
+                                    <mtr>
+                                        <mtd>
+                                            <mrow>
+                                                <mstyle class="null-rect">
+                                                    <mphantom>
+                                                        <mspace height="1.8ex" width="1.2ex" />
+                                                    </mphantom>
+                                                </mstyle>
+                                            </mrow>
+                                        </mtd>
+                                        <mtd>
+                                            <mrow>
+                                                <mstyle class="null-rect">
+                                                    <mphantom>
+                                                        <mspace height="1.8ex" width="1.2ex" />
+                                                    </mphantom>
+                                                </mstyle>
+                                            </mrow>
+                                        </mtd>
+                                        <mtd>
+                                            <mrow>
+                                                <mstyle class="null-rect">
+                                                    <mphantom>
+                                                        <mspace height="1.8ex" width="1.2ex" />
+                                                    </mphantom>
+                                                </mstyle>
+                                            </mrow>
+                                        </mtd>
+                                    </mtr>
+                                    <mtr>
+                                        <mtd>
+                                            <mrow>
+                                                <mstyle class="null-rect">
+                                                    <mphantom>
+                                                        <mspace height="1.8ex" width="1.2ex" />
+                                                    </mphantom>
+                                                </mstyle>
+                                            </mrow>
+                                        </mtd>
+                                        <mtd>
+                                            <mrow>
+                                                <mstyle class="null-rect">
+                                                    <mphantom>
+                                                        <mspace height="1.8ex" width="1.2ex" />
+                                                    </mphantom>
+                                                </mstyle>
+                                            </mrow>
+                                        </mtd>
+                                        <mtd>
+                                            <mrow>
+                                                <mstyle class="null-rect">
+                                                    <mphantom>
+                                                        <mspace height="1.8ex" width="1.2ex" />
+                                                    </mphantom>
+                                                </mstyle>
+                                            </mrow>
+                                        </mtd>
+                                    </mtr>
+                                    <mtr>
+                                        <mtd>
+                                            <mrow>
+                                                <mstyle class="null-rect">
+                                                    <mphantom>
+                                                        <mspace height="1.8ex" width="1.2ex" />
+                                                    </mphantom>
+                                                </mstyle>
+                                            </mrow>
+                                        </mtd>
+                                        <mtd>
+                                            <mrow>
+                                                <mstyle class="null-rect">
+                                                    <mphantom>
+                                                        <mspace height="1.8ex" width="1.2ex" />
+                                                    </mphantom>
+                                                </mstyle>
+                                            </mrow>
+                                        </mtd>
+                                        <mtd>
+                                            <mrow>
+                                                <mstyle class="null-rect">
+                                                    <mphantom>
+                                                        <mspace height="1.8ex" width="1.2ex" />
+                                                    </mphantom>
+                                                </mstyle>
+                                            </mrow>
+                                        </mtd>
+                                    </mtr>
+                                </mtable>
+                            </math></td>
+                        <td class='input-structure input-mtable'></td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+        <div class="regular-expression-button-table">
+            <div>
+                <table>
+                    <caption>正規表現</caption>
+                    <tr>
+                        <td class='input-regular-expression input-wildcard' title='wildcard(任意の一文字(Alt+7))'><math mathsize="200%">
+                                <mpadded class="character-node wildcard regular-expression" lspace="-0.02em" width="-0.04em" voffset="-0.1em">
+                                    <mi><svg width="0.8em" height="0.8em">
+                                            <circle cx="0.4em" cy="0.4em" r="0.3em" stroke="black" fill="none" />
+                                            <line x1="0.4em" y1="0.1em" x2="0.1em" y2="0.4em" stroke="black" />
+                                            <line x1="0.6121320343559642em" y1="0.18786796564403577em" x2="0.18786796564403577em" y2="0.6121320343559642em" stroke="black" />
+                                            <line x1="0.7em" y1="0.4em" x2="0.4em" y2="0.7em" stroke="black" /></svg></mi>
+                                </mpadded>
+                            </math></td>
+                        <!--<td class='input-regular-expression input-wildcard' title='setumei1'>
+           任意の一文字
+          </td>-->
+                        <td class='input-regular-expression input-character-class' title='character class(内部入力文字のいずれか(Alt+8))'><math mathsize="200%">
+                                <mrow class="regular-expression enclosing-regular-expression character-class">
+                                    <menclose notation="verticalstrike">
+                                        <mpadded class="style-enclosing-regular-expression style-character-class">
+                                            <mrow class="style-enclosing-regular-expression-content">
+                                                <mpadded lspace="0.09375em" width="+0.1875em" height="+0.09375em" depth="+0.09375em">
+                                                    <mrow class="integration-node">
+                                                        <mstyle>
+                                                            <mphantom>
+                                                                <mspace height="1.8ex" width="1.2ex">
+                                                            </mphantom>
+                                                        </mstyle>
+                                                    </mrow>
+                                                </mpadded>
+                                            </mrow>
+                                        </mpadded>
+                                    </menclose>
+                                </mrow>
+                            </math></td>
+                        <!--<td class='input-regular-expression input-wildcard' title='setumei2'>
+            内部入力文字のいずれか
+          </td>-->
+                        <td class='input-regular-expression input-negated-character-class' title='negated character class(内部入力文字の以外(Alt+9))'><math mathsize="200%">
+                                <mrow class="regular-expression enclosing-regular-expression negated-character-class">
+                                    <menclose notation="verticalstrike">
+                                        <mpadded class="style-enclosing-regular-expression style-negated-character-class">
+                                            <mrow class="style-enclosing-regular-expression-content">
+                                                <mpadded lspace="0.09375em" width="+0.1875em" height="+0.09375em" depth="+0.09375em">
+                                                    <mrow class="integration-node">
+                                                        <mstyle>
+                                                            <mphantom>
+                                                                <mspace height="1.8ex" width="1.2ex">
+                                                            </mphantom>
+                                                        </mstyle>
+                                                    </mrow>
+                                                </mpadded>
+                                            </mrow>
+                                        </mpadded>
+                                    </menclose>
+                                </mrow>
+                            </math></td>
+                        <!--<td class='input-regular-expression input-wildcard' title='setumei2'>
+            内部入力文字の以外
+          </td>-->
+                    </tr>
+                    <tr>
+                        <td class='input-regular-expression input-zero-or-one' title='zero or one(内部の文字列と最大1回マッチ(Alt+U))'><math mathsize="200%">
+                                <mrow class="regular-expression enclosing-regular-expression zero-or-one">
+                                    <menclose class="" notation="verticalstrike">
+                                        <mpadded class="style-enclosing-regular-expression style-zero-or-one">
+                                            <mrow class="style-enclosing-regular-expression-content">
+                                                <mpadded lspace="0.09375em" width="+0.1875em" height="+0.09375em" depth="+0.09375em">
+                                                    <mrow class="integration-node">
+                                                        <mstyle>
+                                                            <mphantom>
+                                                                <mspace height="1.8ex" width="1.2ex">
+                                                            </mphantom>
+                                                        </mstyle>
+                                                    </mrow>
+                                                </mpadded>
+                                            </mrow>
+                                        </mpadded>
+                                    </menclose>
+                                </mrow>
+                            </math></td>
+                        <!--<td class='input-regular-expression input-wildcard' title='setumei1'>
+            内部の文字列と最大1回マッチ
+          </td>-->
+                        <td class='input-regular-expression input-more' title='repetition(入力文字列の1回以上の繰り返し(Alt+I))'><math mathsize="200%">
+                                <mrow class="regular-expression enclosing-regular-expression more">
+                                    <menclose notation="verticalstrike">
+                                        <mpadded class="style-more-right-lines" width="+0.375em">
+                                            <mpadded class="style-enclosing-regular-expression style-more">
+                                                <mrow class="style-enclosing-regular-expression-content">
+                                                    <mpadded lspace="0.09375em" width="+0.1875em" height="+0.09375em" depth="+0.09375em">
+                                                        <mrow class="integration-node">
+                                                            <mstyle>
+                                                                <mphantom>
+                                                                    <mspace height="1.8ex" width="1.2ex">
+                                                                </mphantom>
+                                                            </mstyle>
+                                                        </mrow>
+                                                    </mpadded>
+                                                </mrow>
+                                            </mpadded>
+                                        </mpadded>
+                                    </menclose>
+                                </mrow>
+                            </math></td>
+                        <!--<td class='input-regular-expression input-wildcard' title='setumei1'>
+            入力文字列の1回以上の繰り返し
+          </td>-->
+                        <td class='input-regular-expression input-boolean-or' title='boolean or(仕切りごとの入力文字列のいずれか(Alt+O))'><math mathsize="200%">
+                                <mrow class="regular-expression enclosing-regular-expression boolean-or">
+                                    <menclose class="" notation="verticalstrike">
+                                        <mpadded class="style-enclosing-regular-expression style-boolean-or">
+                                            <mrow class="style-enclosing-regular-expression-content">
+                                                <mpadded lspace="0.09375em" width="+0.1875em" height="+0.09375em" depth="+0.09375em">
+                                                    <mrow class="integration-node">
+                                                        <mstyle>
+                                                            <mphantom>
+                                                                <mspace height="1.8ex" width="1.2ex">
+                                                            </mphantom>
+                                                        </mstyle>
+                                                    </mrow>
+                                                </mpadded>
+                                            </mrow>
+                                            <mrow class="style-enclosing-regular-expression-content">
+                                                <mpadded lspace="0.09375em" width="+0.1875em" height="+0.09375em" depth="+0.09375em">
+                                                    <mrow class="integration-node">
+                                                        <mstyle>
+                                                            <mphantom>
+                                                                <mspace height="1.8ex" width="1.2ex">
+                                                            </mphantom>
+                                                        </mstyle>
+                                                    </mrow>
+                                                </mpadded>
+                                            </mrow>
+                                        </mpadded>
+                                    </menclose>
+                                </mrow>
+                            </math></td>
+                        <!--<td class='input-regular-expression input-wildcard' title='setumei1'>
+            仕切りごとの入力文字列のいずれか
+          </td>-->
+                    </tr>
+                    <tr>
+                        <td class='input-regular-expression input-capturing' title='capturing for backreference(後方参照用のラベル(n)(Alt+J))'><math mathsize="200%">
+                                <mrow class="regular-expression enclosing-regular-expression capturing">
+                                    <menclose class="" notation="verticalstrike">
+                                        <mpadded class="style-enclosing-regular-expression style-capturing">
+                                            <mrow class="style-enclosing-regular-expression-content">
+                                                <mrow class="capturing-number">
+                                                    <mpadded width="-0.0625em" height="+12.433319091796875px" voffset="+12.433319091796875px">
+                                                        <mrow class="style-capturing-number-outer">
+                                                            <menclose notation="verticalstrike">
+                                                                <mrow class="style-capturing-number-inner">
+                                                                    <mpadded lspace="0.09375em" width="+0.1875em" voffset="+0.09375em">
+                                                                        <mi class="mi-capturing-number" mathsize="0.5em">n</mi>
+                                                                    </mpadded>
+                                                                </mrow>
+                                                            </menclose>
+                                                        </mrow>
+                                                    </mpadded>
+                                                </mrow>
+                                                <mpadded lspace="0.09375em" width="+0.1875em" height="+0.09375em" depth="+0.09375em">
+                                                    <mrow class="integration-node">
+                                                        <mstyle>
+                                                            <mphantom>
+                                                                <mspace height="1.8ex" width="1.2ex">
+                                                            </mphantom>
+                                                        </mstyle>
+                                                    </mrow>
+                                                </mpadded>
+                                            </mrow>
+                                        </mpadded>
+                                    </menclose>
+                                </mrow>
+                            </math></td>
+                        <!--<td class='input-regular-expression input-wildcard' title='setumei1'>
+            後方参照用のラベル(n)
+          </td>-->
+                        <td class='input-regular-expression input-backreference' title='backreference(n(番)を後方参照(Alt+K))'><math mathsize="200%">
+                                <mrow class="regular-expression enclosing-regular-expression backreference">
+                                    <menclose notation="verticalstrike">
+                                        <mpadded class="style-enclosing-regular-expression style-backreference" lspace="0.1875em" width="+0.375em">
+                                            <mrow class="style-enclosing-regular-expression-content">
+                                                <mpadded lspace="0.09375em" width="+0.1875em" height="+0.09375em" depth="+0.09375em">
+                                                    <mrow class="integration-node">
+                                                        <mi class="character-node">n</mi>
+                                                    </mrow>
+                                                </mpadded>
+                                            </mrow>
+                                        </mpadded>
+                                    </menclose>
+                                </mrow>
+                            </math></td>
+                        <!--<td class='input-regular-expression input-wildcard' title='setumei1'>
+            n(番)を後方参照
+          </td>-->
+                    </tr>
+                </table>
+            </div>
+        </div>
+        <!--組み合わせ-->
+        <div class="regular-expression-comb-button-table">
+            <div>
+                <table>
+                    <caption>一括入力</caption>
+                    <tr>
+                        <td class='input-regular-expression Any-of-the-formula-back' title='任意の数式(後方参照あり)'><math mathsize="200%">
+                                <mrow class="regular-expression enclosing-regular-expression capturing">
+                                    <menclose notation="verticalstrike" class="">
+                                        <mpadded class="style-enclosing-regular-expression style-capturing">
+                                            <mrow class="style-enclosing-regular-expression-content">
+                                                <mrow class="capturing-number">
+                                                    <mpadded width="-0.0625em" height="+7.5px" voffset="+7.5px">
+                                                        <mrow class="style-capturing-number-outer">
+                                                            <menclose notation="verticalstrike">
+                                                                <mrow class="style-capturing-number-inner">
+                                                                    <mpadded lspace="0.09375em" width="+0.1875em" voffset="+0.09375em">
+                                                                        <mi class="mi-capturing-number" mathsize="0.5em">1</mi>
+                                                                    </mpadded>
+                                                                </mrow>
+                                                            </menclose>
+                                                        </mrow>
+                                                    </mpadded>
+                                                </mrow>
+                                                <mpadded lspace="0.09375em" width="+0.1875em" height="+0.09375em" depth="+0.09375em">
+                                                    <mrow class="integration-node">
+                                                        <mrow class="regular-expression enclosing-regular-expression more">
+                                                            <menclose notation="verticalstrike">
+                                                                <mpadded width="+0.375em" class="style-more-right-lines">
+                                                                    <mpadded class="style-enclosing-regular-expression style-more">
+                                                                        <mrow class="style-enclosing-regular-expression-content">
+                                                                            <mpadded lspace="0.09375em" width="+0.1875em" height="+0.09375em" depth="+0.09375em">
+                                                                                <mrow class="integration-node">
+                                                                                    <mpadded lspace="-0.02em" width="-0.04em" voffset="-0.1em" class="character-node wildcard regular-expression">
+                                                                                        <mi><svg width="0.8em" height="0.8em">
+                                                                                                <circle cx="0.4em" cy="0.4em" r="0.3em" stroke="black" fill="none" />
+                                                                                                <line x1="0.4em" y1="0.1em" x2="0.1em" y2="0.4em" stroke="black" />
+                                                                                                <line x1="0.6121320343559642em" y1="0.18786796564403577em" x2="0.18786796564403577em" y2="0.6121320343559642em" stroke="black" />
+                                                                                                <line x1="0.7em" y1="0.4em" x2="0.4em" y2="0.7em" stroke="black" /></svg></mi>
+                                                                                    </mpadded>
+                                                                                </mrow>
+                                                                            </mpadded>
+                                                                        </mrow>
+                                                                    </mpadded>
+                                                                </mpadded>
+                                                            </menclose>
+                                                        </mrow>
+                                                    </mrow>
+                                                </mpadded>
+                                            </mrow>
+                                        </mpadded>
+                                    </menclose>
+                                </mrow>
+                            </math></td>
+                    </tr>
+                    <tr>
+                        <td class='input-regular-expression Any-of-the-formula' title='任意の数式'><math mathsize="200%">
+                                <mrow class="regular-expression enclosing-regular-expression more">
+                                    <menclose notation="verticalstrike">
+                                        <mpadded width="+0.375em" class="style-more-right-lines">
+                                            <mpadded class="style-enclosing-regular-expression style-more">
+                                                <mrow class="style-enclosing-regular-expression-content">
+                                                    <mpadded lspace="0.09375em" width="+0.1875em" height="+0.09375em" depth="+0.09375em">
+                                                        <mrow class="integration-node">
+                                                            <mpadded lspace="-0.02em" width="-0.04em" voffset="-0.1em" class="character-node wildcard regular-expression">
+                                                                <mi><svg width="0.8em" height="0.8em">
+                                                                        <circle cx="0.4em" cy="0.4em" r="0.3em" stroke="black" fill="none" />
+                                                                        <line x1="0.4em" y1="0.1em" x2="0.1em" y2="0.4em" stroke="black" />
+                                                                        <line x1="0.6121320343559642em" y1="0.18786796564403577em" x2="0.18786796564403577em" y2="0.6121320343559642em" stroke="black" />
+                                                                        <line x1="0.7em" y1="0.4em" x2="0.4em" y2="0.7em" stroke="black" /></svg></mi>
+                                                            </mpadded>
+                                                        </mrow>
+                                                    </mpadded>
+                                                </mrow>
+                                            </mpadded>
+                                        </mpadded>
+                                    </menclose>
+                                </mrow>
+                            </math></td>
+                    </tr>
+                    <tr>
+                        <td class='input-regular-expression multiplication' title='掛け算'><math mathsize="200%">
+                                <mrow class="regular-expression enclosing-regular-expression zero-or-one">
+                                    <menclose notation="verticalstrike">
+                                        <mpadded class="style-enclosing-regular-expression style-zero-or-one">
+                                            <mrow class="style-enclosing-regular-expression-content">
+                                                <mpadded lspace="0.09375em" width="+0.1875em" height="+0.09375em" depth="+0.09375em">
+                                                    <mrow class="integration-node">
+                                                        <mrow class="regular-expression enclosing-regular-expression character-class">
+                                                            <menclose notation="verticalstrike">
+                                                                <mpadded class="style-enclosing-regular-expression style-character-class">
+                                                                    <mrow class="style-enclosing-regular-expression-content">
+                                                                        <mpadded lspace="0.09375em" width="+0.1875em" height="+0.09375em" depth="+0.09375em">
+                                                                            <mrow class="integration-node">
+                                                                                <mi class="character-node">×</mi>
+                                                                                <mi class="character-node">⋅</mi>
+                                                                            </mrow>
+                                                                        </mpadded>
+                                                                    </mrow>
+                                                                </mpadded>
+                                                            </menclose>
+                                                        </mrow>
+                                                    </mrow>
+                                                </mpadded>
+                                            </mrow>
+                                        </mpadded>
+                                    </menclose>
+                                </mrow>
+                            </math></td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+        <!--<div class="history-table">
+    <div>
+      <table>
+        <caption>履歴</caption>
+        <tr>
+          <td>-->
+        <!--<svg xmlns="http://www.w3.org/2000/svg" id='queryView' width="466" height="150">
+          </svg>-->
+        <!--          <br/>
+          <input type="button" value="copy" class="copy" id="copy">
+
+          </td>
+        </tr>
+      </table>
+    </div>
+  </div>
+-->
+    </div>
+    <!-- <textarea rows="2" cols="40" class="query-string"></textarea> -->
+    <font size="6" color="#111111">
+        自由入力検索
+    </font>
+    <br />
+    キーボードや記号表を用いて数式を入力し、searchボタン
+    <!--またはstudyボタン-->をクリックしてください。
+    <br />
+    <!-- 横に長い数式を入力したい場合、widthをいじると入力欄の横幅を変更できる。 デフォはwidth466, height150-->
+    <div style="padding: 10px; margin-bottom: 10px; border: 5px double #333333;">
+        <svg xmlns="http://www.w3.org/2000/svg" id='queryView' width="466" height="150">
+            <!-- 横に長い数式を入力したい場合、ここのwidthもいじる。 デフォはwidth446, height130-->
+            <foreignObject id='queryView-foreignObject' x='20' y='20' width='446' height='130'>
+            </foreignObject>
+        </svg>
+        <br />
+        <br />
+        <input type="button" value="search" class="search" id="search">
+        <input type="button" value="search_zukei" class="search_zukei" id="search_zukei">
+        <!-- <span class='search' id='search'>search</span> -->
+        <input type="button" value="reset" class="reset" id="reset">
+        <input type="button" value="study" class="study" id="study">
+        <input type="button" value="paste" class="paste" id="paste">
+        <!-- <span class='search' id='search'>search</span> -->
+        <br />
+        <!--
+<?php
+/*
+    if(isset($_POST['shotou_search'])) {
+       echo "初等サーチボタンが押下されました";
+    }
+*/
+?>
+
+<input type="submit" value="shotou_search" class="shotou_search" id="shotou_search" name="shotou_search">
+
+-->
+        <!-- <span class='search' id='search'>search</span> -->
+    </div>
+    <!-- <br/>
+<span id='num'></span>
+<br/>
+<span id='matched'></span> -->
+</body>
+<!--履歴-->
+<!--<div style="padding: 10px; border: 3px double #333333;">
+    <div  id="HistoryQueryView" width="466" height="150"></div>
+    <input type="button" value="copy" class="copy" id="copy">
+</div>
+-->
+<!--<div style="padding: 10px; border: 3px double #333333;">-->
+
+
+<font size="6" color="#111111">
+    検索履歴
+</font>
+<table id="history_table">
+    <!---<caption><font size="4" color="#111111">検索履歴</font></caption>-->
+    <tr>
+        <td width="80" height="100">
+            <div id="HistoryQueryView" width="466" height="150"></div>
+        </td>
+        <td><input type="button" value="copy" class="copy" id="copy"></td>
+    </tr>
+</table>
+</div>
+<!--</div>-->
+<!-- //// //// //// //// -->
+<!-- 2つ目のbody() -->
+
+<body bgcolor onLoad="searchMenuChange()">
+    <br />
+    <font size="6" color="#111111">
+        公式検索
+    </font>
+    <br />
+    下記ドロップダウンメニューから検索したい数式を選択し、y_searchボタンをクリックしてください。
+    <br />
+    <font size="2" color="#111111">
+        カテゴリ名 　　　　　　 検索対象
+    </font>
+    <br />
+    <form name="formName" method="post" action="./pathToProgramFile">
+        <SELECT name="selectName1" onChange="searchMenuChange()">
+            <script language="JavaScript">
+    drawOption(document)
+  </script>
+        </SELECT>
+        <select name="selectName2">
+        </select>
+        <br />
+        <input type="button" value="y_search" class="y_search" id="y_search">
+</body>
+
+<body>
+  <h2>図形公式検索</h2>
+
+  <form name="formZukei">
+    <label for="selectZukei1">カテゴリ：</label>
+    <select name="selectZukei1" id="selectZukei1">
+      <option value="">--カテゴリを選択--</option>
+    </select>
+
+    <br /><br />
+
+    <label for="selectZukei2">公式：</label>
+    <select name="selectZukei2" id="selectZukei2">
+      <option>図形カテゴリを選択してください</option>
+    </select>
+
+    <br /><br />
+    <input type="button" value="図形公式検索" class="y_search_zukei" id="y_search_zukei">
+  </form>
+</body>
+
+<body>
+    <br />
+    <br />
+    <font size="6" color="#111111">
+        変形依拠公式提示
+    </font>
+    <br />
+    <input type="button" value="ikyo" class="ikyo" id="ikyo">
+<!--    <br />
+    <input type="button" value="ikyo_test" class="ikyo_test" id="ikyo_test">-->
+    <br />
+    <input type="button" value="ikyo_jikken" class="ikyo_jikken" id="ikyo_jikken">
+    <br />
+    <input type="button" value="ikyo_jikken2" class="ikyo_jikken2" id="ikyo_jikken2">
+
+    <!--<input type="button" value="ikyo_test2" class="ikyo_test2" id="ikyo_test2">-->
+</body>
+<br />
+
+</html>
